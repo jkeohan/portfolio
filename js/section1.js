@@ -3,6 +3,7 @@ var width = 650 - m.left - m.right;
 var height = 400 - m.top - m.bottom;
 var currentYear = "2002";
 var tooltip;
+var grouped = true;
 
 var svg = d3.select(".regionalstats").append('svg')
 	.attr("width",width + m.left + m.right)
@@ -17,102 +18,244 @@ var radiusScale = d3.scale.sqrt().range([6,20])
 var colorScale = d3.scale.category10()
 
 //Create axises
-var yAxis = d3.svg.axis();
-var xAxis = d3.svg.axis();
+var yAxis = d3.svg.axis().scale(yScale).orient("left")
+	.innerTickSize(-width)
+	.tickFormat(function(d) { return d + "%" } );
+var xAxis = d3.svg.axis().scale(xScale).orient("bottom")
+	.innerTickSize(-height)
+	.tickFormat(function(d) { return d + "%" } );
 
-d3.csv("data/data_regions.csv", render)
+	svg.append("g").attr("class","y Axis")//.attr("transform","translate(40,0)")
+	.append("text")//.style("text-anchor","start")
+  		.attr({ class: "ylabel", y: -60, x: -290, dy: ".71em" })
+  		.attr("transform", "rotate(-90)")	
+  		.text("2012 Renewable Energy Output").style("font-size",20)
 
-var radio_buttons = d3.selectAll('.radio_buttons').on("click", function() {
-      console.log(this.value)
-     // build_chart(radio)
-})
-
-
-function render(data) {
-	console.log(data)
-
-	var filterOutWorld = data.filter(function(d,i) { return d["Location"] } )
-	var keys = d3.keys(data[0]).filter(function(key) { return !(key == "Location" || key == "Region") })
-	var locations = (data.filter(function(d) { return !(d.Location == "World") } ) ).map(function(d)  { return d.Location } )
-	var regions = d3.set(data.map(function(d) {  return d.Region } ) ).values().sort(d3.acscending) 
-
+	svg.append('g').attr("class","x Axis").attr("transform","translate(0," + height + ")")
+	.append("text").style("text-anchor", "middle")
+  		.attr({  class: "xlabel", x: width/2 , y: 50})
+  		.text("2002 Renewable Energy Output").style("font-size",20)
+//API call for csv data
+d3.csv("data/data_regions.csv", function(data) {
+	//d3.nest to rollup Region and mean of years
 	var yearMean = d3.nest().key(function(d) { return d["Region"] } ).sortKeys(d3.ascending)
 	  	.rollup(function(v) { 
 	  		//console.log(v)// [Object, Object]  each obj is a row of data
 	  		return { mean: mean(v), countries: v.map(function(c) { return c.Location} ) } 
 	 			} )
-			.entries(filterOutWorld)
+			.entries(data)
 
 	function mean(val) { 
 		var obj = {};
+		var keys = d3.keys(data[0]).filter(function(key) { return !(key == "Location" || key == "Region") })
 		keys.forEach(function(year) {
 			var y = d3.mean(val, function(m) { return +m[year] 
 			} )
 			obj[year] = d3.format(".2f")(y) 
 		})
 		return obj
-	}//
+	}
 
-	update(currentYear)
+	colorize(yearMean)
 
-	function update(year) {
+	function colorize (yearMean) {
+		yearMean.forEach( function(d,i) {
+			d.color = colorScale(i);
+		})
+	}
+
+	var yearMeanNoWorld = yearMean.filter(function(d) { return !(d.key == "World") })
+	////////D3 Vertical Legend Reusable//////////////////////////
+	var rlegend = d3.models.legend().fontSize(15)
+		// .on("mouseOver", function(d) { d3.select(this).transition().duration(1000).style("font-weight","bold") ;
+		// 	 mouseOver(d); 
+		// 	 //console.log(d)
+		// 	}) 
+		// .on("mouseOut", function(d) { d3.select(this).transition().duration(1000).style("font-weight","normal") ;
+	 //     mouseOut(d); 
+	 //   } )
+	svg.datum(yearMeanNoWorld).call(rlegend)
+	////////D3 Vertical Legend Reusable//////////////////////////
+
+
+	var formatYear = (function () {
+		var array = []
+		yearMean.forEach(function(d) {
+			var obj = {};
+			obj["Region"] = d.key
+			obj["countries"] = d.values.countries
+			d3.entries(d.values.mean).forEach(function(item) {
+				obj[item.key] = item.value
+			})
+			array.push(obj)
+		})
+		return array
+	}
+	)()
+
+	console.log(formatYear)
+	//Add radio buttons
+	var radio_buttons = d3.selectAll('.radio_buttons').on("click", function() {
+		var value = this.value
+		if(value == "Regions") { regionChart(data,yearMean,currentYear,formatYear) } 
+		else { countryChart(data,currentYear,yearMean,formatYear) }
+	}	)
+	//Call the chart
+	regionChart(data,yearMean,currentYear,formatYear)
+})
+
+function countryChart(data,year,yearMean,formatYear) { 
+	grouped = false;
+	console.log(data)
+
+	var yearMean = formatYear
+	var filterOutWorld = data.filter(function(d,i) { return !(d["Location"] == "World")} )
+	var locations = (data.filter(function(d) { return !(d.Location == "World") } ) ).map(function(d)  { return d.Location } )
+	var regions = d3.set(data.map(function(d) {  return d.Region } ) ).values().sort(d3.acscending) 
+
+		yScale.domain([0,d3.max(yearMean, function(d) { return +d["2012"] + 7 } ) ] )//.range([height,0])
+		xScale.domain([0,d3.max(yearMean, function(d) { return +d[year] + 4  } ) ] )//.range([0,width])
+	//radiusScale.domain(d3.extent(yearMean, function(d) {  return +d.values.countries.length } ) )
+
+	var circles = svg.selectAll("circle").data(filterOutWorld)
+
+	circles.enter().append("circle")
+		.attr("cy", function(d) { 
+				var val;
+				yearMean.forEach(function(obj) { if(d.Region == obj.Region) { 
+				val = +obj["2012"]
+				}})
+				return yScale(val)
+		})
+		.attr("cx", function(d) { 
+				var val;
+				yearMean.forEach(function(obj) { if(d.Region == obj.Region) {
+				val = +obj[year]
+				}})
+				return xScale(val)
+		})
+			.attr("r", function(d) { d.radius = 5; return 5 })
+		.attr("class",function(d) { return d.Location + " " + "Country" })
+		.style("fill",function(d) { 
+				var val;
+				yearMean.forEach(function(obj) { if(d.Region == obj.Region) { 
+				val = obj.color
+				d.color = val
+				}})
+				return val
+		})
+		.style("opacity",.8)
+		.on("mouseover", mouseOver)
+		.on("mouseout", mouseOut)
+		.append('title')
+
+	circles.attr("cy", function(d) { 
+				var val;
+				yearMean.forEach(function(obj) { if(d.Region == obj.Region) { 
+				val = +obj["2012"]
+				}})
+				return yScale(val)
+		})
+		.attr("cx", function(d) { 
+				var val;
+				yearMean.forEach(function(obj) { if(d.Region == obj.Region) {
+				val = +obj[year]
+				}})
+				return xScale(val)
+		})
+		.attr("r", function(d) { d.radius = 5; return 5 })
+		.attr("class",function(d) { return d.Location + " " + "Country" })
+		.style("fill",function(d) { 
+				var val;
+				yearMean.forEach(function(obj) { if(d.Region == obj.Region) { 
+						val = obj.color
+				d.color = val
+				}})
+				return val
+		})
+		.style("opacity",.8)
+		.on("mouseover", mouseOver)
+		.on("mouseout", mouseOut)
+		.append('title')
+
+	console.log(circles)
+
+	yScale.domain([0,d3.max(data, function(d) { return +d["2012"] + 7 } ) ] )//.range([height,0])
+	xScale.domain([0,d3.max(data, function(d) { return +d[year] + 4  } ) ] )//.range([0,width])
+	
+	circles.transition().duration(2000)
+		.attr("cy", function(d,i) { return yScale(+d["2012"]) })
+		.attr("cx", function(d,i) { return xScale(+d[year]) })
+
+	d3.selectAll(".Region").transition().duration(2000).attr("r",0).remove()
+
+	//Update Axises
+	svg.select(".x.Axis").transition().duration(2000).call(xAxis);
+	svg.select(".y.Axis").transition().duration(2000).call(yAxis);
+
+}
+
+function regionChart(data,yearMean,year,formatYear) {
+	grouped = true
+
+	console.log(formatYear)
+
+	var yearMean = formatYear.filter(function(d) { return !(d.Region == "World") })
+	var filterOutWorld = data.filter(function(d,i) { return !(d["Location"] == "World")} )
+	var locations = (data.filter(function(d) { return !(d.Location == "World") } ) ).map(function(d)  { return d.Location } )
+	var regions = d3.set(data.map(function(d) {  return d.Region } ) ).values().sort(d3.acscending) 
 		
-		yScale.domain([0,d3.max(yearMean, function(d) { return +d.values.mean["2012"] + 7 } ) ] )//.range([height,0])
-		xScale.domain([0,d3.max(yearMean, function(d) { return +d.values.mean[year] + 4  } ) ] )//.range([0,width])
-		radiusScale.domain(d3.extent(yearMean, function(d) {  return +d.values.countries.length } ) )
+		yScale.domain([0,d3.max(yearMean, function(d) { return +d["2012"] + 7 } ) ] )//.range([height,0])
+		xScale.domain([0,d3.max(yearMean, function(d) { return +d[year] + 4  } ) ] )//.range([0,width])
+		radiusScale.domain(d3.extent(yearMean, function(d) {  return +d.countries.length } ) )
 
 		var circles = svg.selectAll("circle").data(yearMean)
+
 		circles.enter().append("circle")
-			.attr("cy", function(d,i) { return yScale(+d.values.mean["2012"]) })
-			.attr("cx", function(d,i) { return xScale(+d.values.mean[year]) })
-			.attr("r", function(d) { d.radius = radiusScale(+d.values.countries.length)
-				return radiusScale(+d.values.countries.length)})
-			.attr("class",function(d) { return d.key})
+			.attr("class",function(d) { return d.Region})
+
+		circles
+			.attr("cy", function(d,i) { return yScale(+d["2012"]) })
+			.attr("cx", function(d,i) { return xScale(+d[year]) })
+			.attr("radius",0)
+			.attr("class",function(d) { return d.Region + " " + "Region"})
 			.style("fill",function(d,i) { d.color = colorScale(i); return d.color})
-			.style("opacity",.8)
+			.style("fill",function(d,i) { return d.color})
+			.style("opacity",0)
 			.on("mouseover", mouseOver)
 			.on("mouseout", mouseOut)
 			.append('title')
 
-		//Update Axises
-		yAxis.scale(yScale).orient("left")
-		.innerTickSize(-width)
-		.tickFormat(function(d) { return d + "%" } )
+		circles.transition().duration(2000).style("opacity",.8)
+			.attr("r", function(d) { d.radius = radiusScale(+d.countries.length)
+				return radiusScale(+d.countries.length)})
 
-		xAxis.scale(xScale).orient("bottom")
-		.innerTickSize(-height)
-		.tickFormat(function(d) { return d + "%" } )
-
-		//Add Axis Title's
-		svg.append("g").attr("class","y Axis").call(yAxis)//.attr("transform","translate(40,0)")
-			.append("text")//.style("text-anchor","start")
-      		.attr({ class: "ylabel", y: -60, x: -290, dy: ".71em" })
-      		.attr("transform", "rotate(-90)")	
-      		.text("2012 Renewable Energy Output").style("font-size",20)
-
-		svg.append('g').attr("class","x Axis").call(xAxis).attr("transform","translate(0," + height + ")")
-			.append("text").style("text-anchor", "middle")
-      		.attr({  class: "xlabel", x: width/2 , y: 50})
-      		.text("2002 Renewable Energy Output").style("font-size",20)
-	}
-
-	////////D3 Vertical Legend Reusable//////////////////////////
-	var rlegend = d3.models.legend().fontSize(15)
-		.on("mouseOver", function(d) { d3.select(this).transition().duration(1000).style("font-weight","bold") ;
-			 mouseOver(d); 
-			 //console.log(d)
-			}) 
-		.on("mouseOut", function(d) { d3.select(this).transition().duration(1000).style("font-weight","normal") ;
-	     mouseOut(d); } )
-	svg.datum(yearMean).call(rlegend)
-	////////D3 Vertical Legend Reusable//////////////////////////
+		d3.selectAll(".Country").transition().duration(2000)
+				.attr("cy", function(d) { 
+					var val;
+					yearMean.forEach(function(obj) { if(d.Region == obj.Region) { 
+					val = +obj["2012"]
+				}})
+				return yScale(val)
+		})
+		.attr("cx", function(d) { 
+				var val;
+				yearMean.forEach(function(obj) { if(d.Region == obj.Region) {
+				val = +obj[year]
+			}})
+				return xScale(val)
+		}).style("opacity",0).remove()
+		
+		svg.select(".x.Axis").transition().duration(2000).call(xAxis);
+		svg.select(".y.Axis").transition().duration(2000).call(yAxis);
+}
 
 	function mouseOver(d) {
-	 	var cColor = d.color
-		var c = d3.select("." + d.key.split(" ")[0])//.transition().attr("r",30)
+		var c = d3.select(this)
+	 //	var cColor = d.color
 		var cx = +c.attr("cx")
 	 	var cy = +c.attr("cy")
-		c.call(displayToolTip,d,cColor,cx,cy)
+		c.call(displayToolTip,d,cx,cy)
 
 		var radiusOver = c.node().r.animVal.value;
 			c.transition().duration(250)
@@ -121,34 +264,15 @@ function render(data) {
 			.attr("r", d.radius + 10)
 
 		var line1 = svg.append("line").datum(d)
-			line1
-				.attr("x1",xScale(0) )
-				.attr("y1", function(d) { return yScale(+d.values.mean["2012"] ) } )
-				.attr("x2", function(d) { return xScale(+d.values.mean[currentYear]) })
-				.attr("y2", function(d) { return yScale(+d.values.mean["2012"])})
-				.attr("stroke-width", 1)
-				.attr("stroke", d.color ) //d3.select(this).style("fill")  )
-				.style("opacity",1)
-				.attr("class","line1")
+		line1.call(createLine1)
 
 		var line2 = svg.append("line").datum(d)
-			line2
-				.attr("x1", function(d) { return xScale(+d.values.mean[currentYear]) } )
-				.attr("y1", height )
-				.attr("x2", function(d) { return xScale(+d.values.mean[currentYear]) })
-				.attr("y2", function(d) { return yScale(+d.values.mean["2012"])})
-				.attr("stroke-width", 1)
-				.attr("stroke", d.color  )
-				.style("opacity",1)
-				.attr("class","line2")
-		
-			.attr("r",radiusOver + 10)
+		line2.call(createLine2)
 	}
 
 	function mouseOut(d) {
 
-		var c = d3.select("." + d.key.split(" ")[0])//.transition().attr("r",30)
-
+		var c = d3.select(this)
 		c.transition().duration(250)
 			.attr("stroke-width",0)
 			.attr("stroke", "rgba(230,230,230, .8)")
@@ -158,31 +282,69 @@ function render(data) {
 		d3.selectAll(".line2").transition().duration(250).style("opacity",0).remove()
 
 		tooltip.transition().duration(250).style('opacity',0).remove()
-
 	}
 
-	function displayToolTip(selection,d,color,cx,cy) { 
+	function createLine1() {
+				this
+				.attr("x1",xScale(0) )
+				.attr("y1", yScale(+this.datum()["2012"] )  )
+				.attr("x2", xScale(+this.datum()[currentYear]) )
+				.attr("y2", yScale(+this.datum()["2012"]) )
+				.attr("stroke-width", 1)
+				.attr("stroke", this.datum()["color"] ) //d3.select(this).style("fill")  )
+				.style("opacity",1)
+				.attr("class","line1")
+	}
+
+	function createLine2(){
+			this
+				.attr("x1", xScale(+this.datum()[currentYear])  )
+				.attr("y1", height )
+				.attr("x2", xScale(+this.datum()[currentYear]) )
+				.attr("y2", yScale(+this.datum()["2012"]))
+				.attr("stroke-width", 1)
+				.attr("stroke", this.datum()["color"]  )
+				.style("opacity",1)
+				.attr("class","line2")
+				//.attr("r",radiusOver + 10)
+	}
+	function displayToolTip(selection,d,cx,cy) { 
 
 			tooltip = d3.select(".regionalstats").append("div").attr("class","d3tooltip")
 			tooltip.style("font-size", 10)
-			tooltip.style("border" , "3px solid " + color )
+			tooltip.style("border" , "3px solid " + d.color )
 				.transition().duration(250).style("opacity",1)
 
-			tooltip.html(
-			'<span class="regionName">' + d.key + '</span><br/>' + 
-			'<hr  class="d3tooltiphr" style="border: 1px solid ' +  color + ' " ' +  '>' +
-			'<span class="key">2002:</span> <span class="value">' + +d.values.mean["2002"] + '%</span><br/>'  + 
-			'<span class="key">2012:</span> <span class="value">' + +d.values.mean["2012"] + '%</span><br/>' + 
-			'<hr class="d3tooltiphr" style="border: 1px solid ' +  color + ' " ' +  '>' +
-			'<span class="key">Countries:</span>  <span class="value">' + d.values.countries.length + '</span>')
-				.style("left", function() {
-			 if ((cx + 100) > width ) { return (cx -30) + "px" } 
-				else { return (cx + 100) + "px" } 
-			} )
-			.style("top", (cy) + "px")
+			if(grouped) {
+
+				tooltip.html(
+				'<span class="regionName">' + d.Region + '</span><br/>' + 
+				'<hr  class="d3tooltiphr" style="border: 1px solid ' +  d.color + ' " ' +  '>' +
+				'<span class="key">2002:</span> <span class="value">' + +d["2002"] + '%</span><br/>'  + 
+				'<span class="key">2012:</span> <span class="value">' + +d["2012"] + '%</span><br/>' + 
+				'<hr class="d3tooltiphr" style="border: 1px solid ' +  d.color + ' " ' +  '>' +
+				'<span class="key">Countries:</span>  <span class="value">' + d.countries.length + '</span>')
+					.style("left", function() {
+				 if ((cx + 100) > width ) { return (cx -30) + "px" } 
+					else { return (cx + 100) + "px" } 
+				} )
+				.style("top", (cy) + "px")
+			}
+
+			else {
+					tooltip.html(
+				'<span class="regionName">' + d.Location + '</span><br/>' + 
+				'<hr  class="d3tooltiphr" style="border: 1px solid ' +  d.color + ' " ' +  '>' +
+				'<span class="key">2002:</span> <span class="value">' + +d["2002"] + '%</span><br/>'  + 
+				'<span class="key">2012:</span> <span class="value">' + +d["2012"] + '%</span><br/>')
+				//'<hr class="d3tooltiphr" style="border: 1px solid ' +  color + ' " ' +  '>')
+					.style("left", function() {
+				 if ((cx + 100) > width ) { return (cx -30) + "px" } 
+					else { return (cx + 100) + "px" } 
+				} )
+				.style("top", (cy) + "px")
+			}
 
 			return tooltip
 	}
-
-}//render
 

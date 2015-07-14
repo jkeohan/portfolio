@@ -99,6 +99,10 @@
   line-height: 1.5em;
   font-size: 0.8em;
 }
+
+.intro { 
+	font-size: 18px;
+}
 /*** Main-Content ***/
 
 /*** D3 Specific ***/
@@ -128,6 +132,11 @@
 
 	.switch input {
 		margin-left:5px;
+	}
+
+	.switch label{
+		font-weight: normal;
+		font-size:15px;
 	}
 /****** Form    *******/
 
