@@ -1,0 +1,169 @@
+
+/*** Navigation ***/
+.nav {
+	/*1. images overflowed below the nav...R=added overflow hidden and revmoved set height
+		There is 
+	*/
+/*	height:50px;*/
+		background-color: #85b433;
+			border-bottom: 10px solid #FFB266;
+			opacity:.8;
+}
+.nav a {
+  color: #5a5a5a;
+  font-size: 20px;
+  font-weight: bold;
+  padding: 14px 10px;
+  text-transform: uppercase;
+  	text-decoration: none;
+
+}
+
+.nav li{
+/* 1. display: inline shortens the border to 1/4; */
+/* 2. display: block: stacks the li's; */
+	display:inline-block;
+
+}
+
+.pull-left.border li+li { 
+	border-left: 3px solid #FFB266; 
+/*	height:50px;*/
+}
+
+.nav .pull-left img {
+		max-height:50px;
+}
+
+.nav ul {
+	/*1. ul with images had margin-bottom:10px set by bootstrap css. clearing that option then 
+	changed it to 14px but I couldn't find where that was configured. 
+	 the grayed out rules are the unset rules, which use a special default stylesheet that is 
+	 applied to all elements(the rules that make the element renderable, because all styles have to have a value).
+	*/
+	margin:auto;
+}
+
+.nav ul.chart-types{
+	margin-top:15px;
+	margin-left:20px;
+
+}
+/*** Navigation ***/
+
+/*** Hero-Shot ***/
+	.hero-shot {
+			background-image: url(http://biopact.com/wp-content/uploads/2013/01/cropped-human-hand-holding-a-city.jpg);
+			width:auto;
+			height:400px;
+    	background-repeat: no-repeat;
+    	background-size: 100%;
+		}
+/*** Hero-Shot ***/
+
+/*** Main-Content ***/
+.main-content{
+	margin-left:10%;
+	margin-right:10%;
+	margin-top:-5%;
+	background: white;
+	padding-top:10px;
+	padding-left:5px;
+	padding-right: 5px;
+
+}
+
+.main-content .main{
+	width:100%;
+}
+
+.divider{
+		width:200px;
+		margin-top:40px;
+		margin-bottom:20px;
+		border: 3px solid #85b433;
+
+	}
+
+.number {
+  width: 40px;
+  background-color: #85b433;;
+  color: #fff;
+  height: 40px;
+  text-align: center;
+  display: inline-block;
+  vertical-align: middle;
+  margin-right: 10px;
+  margin-top: -10px;
+  font-weight: 300;
+  line-height: 1.5em;
+  font-size: 0.8em;
+}
+/*** Main-Content ***/
+
+/*** D3 Specific ***/
+.Axis line {
+	stroke: #000;
+	stroke-width: .1;
+}
+.Axis path {
+	display:none;
+}
+.Axis text {
+	font-size: 10px;
+}
+
+/** Scatterplot **/
+
+/****** Form    *******/
+  .switch {
+  position: absolute;
+  top: 20px;
+  left: 70px;
+	}		
+
+	.switch label:last-of-type{
+		margin-left:15px;
+	}
+
+	.switch input {
+		margin-left:5px;
+	}
+/****** Form    *******/
+
+/** Tooltip **/
+.d3tooltip {
+  position: absolute;
+	padding: 5px;
+  /*pointer-events: none;*/
+  border: 1px solid green;
+  border-radius: 12px;
+	line-height: 20px;
+  opacity: .07;
+  background-color:white;
+}
+
+.d3tooltiphr {
+	margin:2px 0;
+}
+
+.regionName{ 
+	font-size:12px;
+	font-weight: bold;
+	text-align: center;
+	display:block;
+	margin-bottom:-20px;
+
+}
+
+.value {
+	font-size:12px;
+	font-weight: bold;
+	margin-top:-10px;
+}
+
+.key {
+	font-size:12px;
+}
+/** Tooltip **/
+/*** D3 Specific ***/

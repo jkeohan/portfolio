@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="utf-8">
+		<!-- // <script type="text/javascript" src="http://d3js.org/d3.v3.js"></script> -->
+		<script type="text/javascript" src="js/d3.min.js"></script>	
+		<script type="text/javascript" src="js/reusable.d3.charts.js"></script>
+		<script type="text/javascript" src="js/colorbrewer.js"></script>
+		<link rel="stylesheet"  href="http://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
+		<link rel="stylesheet" href="http://s3.amazonaws.com/codecademy-content/courses/ltp/css/bootstrap.css">
+    <link rel="stylesheet" href="css/main.css">
+		<link href="http://fonts.googleapis.com/css?family=Lato:400,600" rel="stylesheet" type="text/css">
+		<link href="http://fonts.googleapis.com/css?family=Lato:400,600" rel="stylesheet" type="text/css">
+		<link href="http://fonts.googleapis.com/css?family=Lato:400,600" rel="stylesheet" type="text/css">
+	</head>
+	<body>
+    <div class="nav clearfix">
+      <div class="container">
+        <ul class="pull-left border">
+          	<li class="mainLogo"><a href="*"><img src="images/d3js.jpg" alt="D3"></a></li>
+		      	<li class="mainLogo" id="ocd"><a href="*"><img src="images/logo-oecd-embed@2x.png"></a></li>
+        </ul>
+        <ul class="pull-left chart-types">
+          <li><a href="#">Sign Up</a></li>
+          <li><a href="#">Log In</a></li>
+          <li><a href="#">Help</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="hero-shot"></div>
+    <div class="main-content">
+    	<div class="containter main">
+    		<h1>D3 Charts on Renewable Energy</h1>
+    		<p>This site was created to demo several D3 charts and graphs developed while taking the <a href="http://journalismcourses.org/D3.html">Data Visualization and Inforgaphics with D3</a> online course provided by JournalismCourses.org. The course consisted of 6 modules and was desinged to introduce data vizualization best practices and then building several charts and graphs using D3. The data set was provided by OECD and consisted of the percentage of Renewable Energy production of 41 countries from 2002 to 2012</p>
+
+  			<span>Source: </span><a href="https://data.oecd.org/energy/renewable-energy.htm#indicator-chart">https://data.oecd.org/energy</a>
+    		<hr class="divider">
+    	</div>
+    	<div class="container main">
+    		<h1><span class="number">1 </span>Scatter Plot on Regional Growth</h1>
+    		<div class="row">
+    			<div class="col-md-8">
+    				<div class="switch">
+						<form>
+							<label>Regions<input type="radio" name="choice" value="Regions" class="radio_buttons" checked></label>
+							<label>Countries<input type="radio" name="choice" value="Countries" class="radio_buttons"></label>
+						</form>
+						</div>
+    				<div class="regionalstats"></div>
+          </div>
+          <div class="col-md-4">
+          		<h3>Functional Components</h3>
+          		<p>Some of the components used in the formatting data, creating the scatterplot and adding additonal functionality included:</p>
+          		<ul>
+          			<li>d3.csv</li>
+        				<li>d3.mean</li>
+        				<li>d3.nest</li>
+      					<li>d3.keys</li>
+    						<li>d3.set</li>
+  							<li>d3.map</li>
+  							<li>d3.transition</li>
+          		</ul>
+          		<p>Additinally the legend was packaged as a reusable component following best practices outlined in the book: "Developing a D3.js Edge" by Chris Viau.  It is called using d3.modlue.legend()
+          </div>
+    		</div>
+    	</div>
+    		<hr class="divider">
+    		<div class="container main">
+    		<h1><span class="number">1 </span>Scatter Plot on Regional Growth</h1>
+    		<div class="row">
+    			<div class="col-md-8">
+    				<div class="regionalstats"></div>
+          </div>
+          <div class="col-md-4">
+          
+          </div>
+    		</div>
+    	</div>
+    </div>
+
+    <script type="text/javascript" src="js/section1.js"></script>
+	</body>
+</html>
