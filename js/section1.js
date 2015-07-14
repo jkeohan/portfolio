@@ -1,3 +1,4 @@
+( function () {
 var m = {top:50,bottom:60,left:70,right:150};
 var width = 650 - m.left - m.right;
 var height = 400 - m.top - m.bottom;
@@ -12,7 +13,7 @@ var svg = d3.select(".regionalstats").append('svg')
 
 //Create scales
 var yScale = d3.scale.linear().range([height,0]);
-var xScale = d3.scale.linear().range([0,width+2]);
+var xScale = d3.scale.linear().range([0,width]);
 var radiusScale = d3.scale.sqrt().range([6,20])
 //var radiusScale = d3.scale.linear().range([6,20])
 var colorScale = d3.scale.category10()
@@ -66,7 +67,7 @@ d3.csv("data/data_regions.csv", function(data) {
 
 	var yearMeanNoWorld = yearMean.filter(function(d) { return !(d.key == "World") })
 	////////D3 Vertical Legend Reusable//////////////////////////
-	var rlegend = d3.models.legend().fontSize(15)
+	var rlegend = d3.models.legend().fontSize(15).width(width).height(height)
 		// .on("mouseOver", function(d) { d3.select(this).transition().duration(1000).style("font-weight","bold") ;
 		// 	 mouseOver(d); 
 		// 	 //console.log(d)
@@ -113,8 +114,8 @@ function countryChart(data,year,yearMean,formatYear) {
 	var locations = (data.filter(function(d) { return !(d.Location == "World") } ) ).map(function(d)  { return d.Location } )
 	var regions = d3.set(data.map(function(d) {  return d.Region } ) ).values().sort(d3.acscending) 
 
-		yScale.domain([0,d3.max(yearMean, function(d) { return +d["2012"] + 7 } ) ] )//.range([height,0])
-		xScale.domain([0,d3.max(yearMean, function(d) { return +d[year] + 4  } ) ] )//.range([0,width])
+		// yScale.domain([0,d3.max(yearMean, function(d) { return +d["2012"] + 7 } ) ] )//.range([height,0])
+		// xScale.domain([0,d3.max(yearMean, function(d) { return +d[year] + 4  } ) ] )//.range([0,width])
 	//radiusScale.domain(d3.extent(yearMean, function(d) {  return +d.values.countries.length } ) )
 
 	var circles = svg.selectAll("circle").data(filterOutWorld)
@@ -163,7 +164,7 @@ function countryChart(data,year,yearMean,formatYear) {
 				}})
 				return xScale(val)
 		})
-		.attr("r", function(d) { d.radius = 5; return 5 })
+		//.attr("r", function(d) { d.radius = 5; return 5 })
 		.attr("class",function(d) { return d.Location + " " + "Country" })
 		.style("fill",function(d) { 
 				var val;
@@ -186,6 +187,7 @@ function countryChart(data,year,yearMean,formatYear) {
 	circles.transition().duration(2000)
 		.attr("cy", function(d,i) { return yScale(+d["2012"]) })
 		.attr("cx", function(d,i) { return xScale(+d[year]) })
+		.attr("r",5)
 
 	d3.selectAll(".Region").transition().duration(2000).attr("r",0).remove()
 
@@ -221,16 +223,16 @@ function regionChart(data,yearMean,year,formatYear) {
 			.attr("class",function(d) { return d.Region + " " + "Region"})
 			.style("fill",function(d,i) { d.color = colorScale(i); return d.color})
 			.style("fill",function(d,i) { return d.color})
-			.style("opacity",0)
+			//.style("opacity",0)
 			.on("mouseover", mouseOver)
 			.on("mouseout", mouseOut)
 			.append('title')
 
-		circles.transition().duration(2000).style("opacity",.8)
+		circles.transition().duration(3000).style("opacity",.8)
 			.attr("r", function(d) { d.radius = radiusScale(+d.countries.length)
 				return radiusScale(+d.countries.length)})
 
-		d3.selectAll(".Country").transition().duration(2000)
+		d3.selectAll(".Country").transition().duration(3000)
 				.attr("cy", function(d) { 
 					var val;
 					yearMean.forEach(function(obj) { if(d.Region == obj.Region) { 
@@ -347,4 +349,6 @@ function regionChart(data,yearMean,year,formatYear) {
 
 			return tooltip
 	}
-
+})()
+//1. xAxis width for Region is 441px but for Country is 399px
+//RESOLUTION: 

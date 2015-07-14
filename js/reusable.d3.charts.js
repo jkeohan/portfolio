@@ -6,6 +6,9 @@ d3.models = {};
 d3.models.legend = function () {
 
 	var fontSize = 15;
+	var width = 650;
+	var height = 400;
+
 	var dispatch = d3.dispatch("mouseOver", "mouseOut");
 
 	function render(selection) {
@@ -36,6 +39,16 @@ d3.models.legend = function () {
 	render.fontSize = function(_x) {
 		if (!arguments.length) return fontSize;
 		fontSize = _x;
+		return this;
+	}
+	render.width = function(_x) {
+		if (!arguments.length) return width;
+		width = _x;
+		return this;
+	}
+	render.height = function(_x) {
+		if (!arguments.length) return height;
+		height = _x;
 		return this;
 	}
 	d3.rebind(render, dispatch, "on")

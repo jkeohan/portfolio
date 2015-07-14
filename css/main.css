@@ -175,4 +175,74 @@
 	font-size:12px;
 }
 /** Tooltip **/
+
+/*** Bar Graph ***/
+
+		.x.axis path {
+	/*		opacity: 0;*/
+			display:none;
+			/*stroke-width:1;*/
+		/*	fill: none;*/
+		/*	stroke: black;*/
+		}
+
+		.x.axis line {
+			stroke-width:.07;
+			/*fill: none;*/
+			stroke: #000;
+		}
+
+		.x.axis text {
+			font-size: 14px;
+		}
+		.allContent {
+			width:1000px;
+		}
+
+		.barGraph-title h2{
+			text-align: center;
+		}
+		.barGraphText{
+			position:absolute;
+			top:0px;
+			right:200px;
+		}
+
+		.enter, .update{
+			font-weight: normal;
+			font-size:13px;
+		}
+		.playAll {
+			margin-left:55px;
+			margin-bottom:5px;
+			cursor:pointer;
+		}
+		.buttonContainer {
+				margin:10px auto;
+				display: inline-block;
+				text-align: center;
+				width:100%;
+				overflow:hidden;
+		}
+		.button {
+			display: inline-block;
+			margin-left: 10px;
+			font-size: 15px;
+			border: 1px solid black;
+			padding:5px;
+			cursor:pointer;
+		}
+		.button.selected {
+			font-weight: bold;
+			border: 3px solid green;
+			color:#296629;
+		}
+		.clearfix {
+			clear:both;
+		}
+/*** Bar Graph ***/
+
 /*** D3 Specific ***/
+
+
+
