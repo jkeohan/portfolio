@@ -1,36 +1,31 @@
 (function() { 
 
-	var margin = {top:10,right:0,bottom:50,left:40},
-				width = 700 - margin.left - margin.right,
+	var margin = {top:10,right:0,bottom:10,left:40},
+				width = 750 - margin.left - margin.right,
 				height = 800 - margin.top - margin.bottom
+	var colorScale = d3.scale.category10()
+	var tempColor;
+	var playInterval;
+	var years = [2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012]
+	var year = 2002;
+	var data;
 
-		  var color = d3.scale.linear()
-				 .range(['#B8B800','#296629'])
-				 //.range(['#66FF66',  '#296629'])
-			var colorScale = d3.scale.category10()
-
- 			var tempColor;
- 			var playInterval;
- 			var years = [2002,2003,2004,2005,2006,2007,2008,2009,2010,2011,2012]
- 			var year = 2002;
- 			var data;
-
- 			var source = d3.select("body")
- 			var barGraphTitle = d3.select(".barGraph-title")
- 			var playAll = d3.select(".playAll")
- 			var buttonYears = d3.select(".buttonContainer")
-			var svg = d3.select('.countrystats').append("svg")
-				.attr("width", width + margin.left + margin.right)
-				.attr("height", height + margin.top + margin.bottom)		
-				.append("g")//.attr({ width: width, height: height, transfom: "translate(20,50)"})
-			var worldTotal;
+	//var source = d3.select("body")
+	var barGraphTitle = d3.select(".barGraph-title")
+	var playAll = d3.select(".playAll")
+	var buttonYears = d3.select(".buttonContainer")
+	var svg = d3.select('.countrystats').append("svg")
+		.attr("width", width + margin.left + margin.right)
+		.attr("height", height + margin.top + margin.bottom)		
+		.append("g")//.attr({ width: width, height: height, transfom: "translate(20,50)"})
+	var worldTotal;
 
 			// setup x 
 			var xValue = function(d) { return d[year];}, // data -> value
-	    	xScale = d3.scale.linear().range([0,width]), // value -> display
+	    	xScale = d3.scale.linear().range([0,width - 160]).domain([0,100]), // value -> display
 	    	xMap = function(d) { return xScale(xValue(d));}, // data -> display
 	    	xAxis = d3.svg.axis().scale(xScale).orient("bottom").tickSize(height);
-	    	xScale.domain([0,100])
+	    
 
 	    	// setup y
 			var yValue = function(d) { return d.Location;}, // data -> value
@@ -51,8 +46,6 @@
       	var regions = d3.nest().key(function(d) { return d["Region"]}).sortKeys(d3.ascending).entries(data)
       	regions = regions.filter(function(d) { return !(d.key == "World")})
       
-  
-
       	function colorize (regions) {
 					regions.forEach( function(d,i) {
 						d.color = colorScale(i);
@@ -61,14 +54,14 @@
 
 				colorize(regions)
 				
-				var rlegend = d3.models.legend().fontSize(15).width(width-140).height(height)
+				var rlegend = d3.models.legend().fontSize(15).width(width-160).height(height)
 				svg.datum(regions).call(rlegend)
       	data = data 
       	worldVal = data
 
 
       	//Update scales
-      	color.domain([9,data.length])
+      	// color.domain([9,data.length])
 
       	//svg.append('g').attr("class", "x axis").attr("transform","translate(250,0)").call(xAxis)
 
@@ -98,7 +91,7 @@
         update(year,regions)
 //UPDATE FUNCITON......
         function update(year,regions) {
-        	console.log(regions)
+        
 
         	xScale.domain([0,100])
 

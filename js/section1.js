@@ -94,7 +94,7 @@ d3.csv("data/data_regions.csv", function(data) {
 	}
 	)()
 
-	console.log(formatYear)
+
 	//Add radio buttons
 	var radio_buttons = d3.selectAll('.radio_buttons').on("click", function() {
 		var value = this.value
@@ -164,7 +164,7 @@ function countryChart(data,year,yearMean,formatYear) {
 				}})
 				return xScale(val)
 		})
-		//.attr("r", function(d) { d.radius = 5; return 5 })
+		.attr("r", function(d) { d.radius = 5; return 5 })
 		.attr("class",function(d) { return d.Location + " " + "Country" })
 		.style("fill",function(d) { 
 				var val;
@@ -200,9 +200,10 @@ function countryChart(data,year,yearMean,formatYear) {
 function regionChart(data,yearMean,year,formatYear) {
 	grouped = true
 
-	console.log(formatYear)
+
 
 	var yearMean = formatYear.filter(function(d) { return !(d.Region == "World") })
+	//yearMean =  yearMean.filter(function(d) { return (d.Region == "Latin America" ) })
 	var filterOutWorld = data.filter(function(d,i) { return !(d["Location"] == "World")} )
 	var locations = (data.filter(function(d) { return !(d.Location == "World") } ) ).map(function(d)  { return d.Location } )
 	var regions = d3.set(data.map(function(d) {  return d.Region } ) ).values().sort(d3.acscending) 
@@ -215,11 +216,14 @@ function regionChart(data,yearMean,year,formatYear) {
 
 		circles.enter().append("circle")
 			.attr("class",function(d) { return d.Region})
+			.attr("r",20)
 
 		circles
-			.attr("cy", function(d,i) { return yScale(+d["2012"]) })
-			.attr("cx", function(d,i) { return xScale(+d[year]) })
-			.attr("radius",0)
+			//if x/y defined here then the newly added regions are 
+			//jumpted into position.  Not for a smooth transition
+			//.attr("cy", function(d,i) { return yScale(+d["2012"]) })
+			//.attr("cx", function(d,i) { return xScale(+d[year]) })
+			.attr("radius",5)
 			.attr("class",function(d) { return d.Region + " " + "Region"})
 			.style("fill",function(d,i) { d.color = colorScale(i); return d.color})
 			.style("fill",function(d,i) { return d.color})
@@ -231,6 +235,8 @@ function regionChart(data,yearMean,year,formatYear) {
 		circles.transition().duration(3000).style("opacity",.8)
 			.attr("r", function(d) { d.radius = radiusScale(+d.countries.length)
 				return radiusScale(+d.countries.length)})
+				.attr("cy", function(d,i) { return yScale(+d["2012"]) })
+			.attr("cx", function(d,i) { return xScale(+d[year]) })
 
 		d3.selectAll(".Country").transition().duration(3000)
 				.attr("cy", function(d) { 

@@ -12,6 +12,7 @@
 		<link href="http://fonts.googleapis.com/css?family=Lato:400,600" rel="stylesheet" type="text/css">
 		<link href="http://fonts.googleapis.com/css?family=Lato:400,600" rel="stylesheet" type="text/css">
 		<link href="http://fonts.googleapis.com/css?family=Lato:400,600" rel="stylesheet" type="text/css">
+		<link href='http://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
 	</head>
 	<body>
     <div class="nav clearfix">
@@ -21,9 +22,9 @@
 		      	<li class="mainLogo" id="ocd"><a href="*"><img src="images/logo-oecd-embed@2x.png"></a></li>
         </ul>
         <ul class="pull-left chart-types">
-          <li><a href="#">Sign Up</a></li>
-          <li><a href="#">Log In</a></li>
-          <li><a href="#">Help</a></li>
+          <li><a href="index.html#section1">Scatterplot</a></li>
+          <li><a href="index.html#section2">Bar Graph</a></li>
+          <li><a href="index.html#section3">Line Chart</a></li>
         </ul>
       </div>
     </div>
@@ -36,6 +37,7 @@
 
   			<span>Source: </span><a href="https://data.oecd.org/energy/renewable-energy.htm#indicator-chart">https://data.oecd.org/energy</a>
     		<hr class="divider">
+    		<a name="section1"></a>
     	</div>
     	<div class="container main">
     		<h1><span class="number">1 </span>Scatter Plot on Regional Growth</h1>
@@ -54,35 +56,59 @@
           		<p>Some of the components used in the formatting data, creating the scatterplot and adding additonal functionality included:</p>
           		<ul>
           			<li>d3.csv</li>
+          			<li>d3.map</li>
+          			<li>d3.set</li>
+          			<li>d3.keys</li>
         				<li>d3.mean</li>
         				<li>d3.nest</li>
-      					<li>d3.keys</li>
-    						<li>d3.set</li>
-  							<li>d3.map</li>
+        				<li>d3.extent</li>
   							<li>d3.transition</li>
           		</ul>
           		<p>Additinally the legend was packaged as a reusable component following best practices outlined in the book: <a href="http://bleedingedgepress.com/our-books/developing-a-d3-js-edge/">Developing a D3.js Edge"</a> by Chris Viau.  It is called using d3.modlue.legend()
           </div>
     		</div>
     	</div>
+
     		<hr class="divider">
-    		<div class="container main">
-    		<h1><span class="number">2 </span>Bar Graph On Country Growth</h1>
-    		<div class="row">
-    			<div class="col-md-8">
-	    			<div class="playAll"></div>
-						<div class="buttonContainer"></div>
-						<div class="clearfix"></div>
-    				<div class="countrystats"></div>
-          </div>
-          <div class="col-md-4">
-          
-          </div>
-    		</div>
+    		<a name="section2"></a>
+	    	<div class="container main" id="section2">
+	    		<h1><span class="number">2 </span>Bar Graph On Country Growth</h1>
+	    		<div class="row">
+	    			<div class="col-md-8">
+		    			<div class="playAll"></div>
+							<div class="buttonContainer"></div>
+							<div class="clearfix"></div>
+	    				<div class="countrystats"></div>
+	          </div>
+	          <div class="col-md-4">
+	          <h3>Functional Components</h3>
+	          		<p>Although no new d3 functionality has been introduced and update() function has been configred to sequentially cycle through the years and executed by clicking the "PLAY ALL YEAR" line.  
+	          		<p>Once agian the <code>reusable legend</code> was incorporated into this design and executed as follows:<br>
+								<pre><code>var rlegend = d3.models.legend().fontSize(15).width(width-160).height(height)
+								svg.datum(regions).call(rlegend)
+							</code></pre>
+	          </div>    
+	    		</div>
     	</div>
+
+    		<hr class="divider">
+    		<a name="section3"></a>
+	    	<div class="container main" id="section3">
+	    		<h1><span class="number">3 </span>Line Chart On Country Growth</h1>
+	    		<div class="row">
+	    			<div class="col-md-8">
+	    				<div class="lineChart"></div>
+	          </div>
+	          <div class="col-md-4">
+	          	<div class="sideBar"></div>
+	          	<div class="fcomponents">
+	         
+	          </div>
+	    	
     </div>
 
     <script type="text/javascript" src="js/section1.js"></script>
     <script type="text/javascript" src="js/section2.js"></script>
+    <script type="text/javascript" src="js/section3.js"></script>
 	</body>
 </html>

@@ -10,31 +10,28 @@
 			opacity:.8;
 }
 .nav a {
-  color: #5a5a5a;
-  font-size: 20px;
+  color: #244774;
+  font-family: 'Poiret One';
+  font-size: 25px;
   font-weight: bold;
   padding: 14px 10px;
-  text-transform: uppercase;
-  	text-decoration: none;
+  /*text-transform: uppercase;*/
+  text-decoration: none;
 
 }
-
 .nav li{
 /* 1. display: inline shortens the border to 1/4; */
 /* 2. display: block: stacks the li's; */
 	display:inline-block;
 
 }
-
 .pull-left.border li+li { 
 	border-left: 3px solid #FFB266; 
 /*	height:50px;*/
 }
-
 .nav .pull-left img {
 		max-height:50px;
 }
-
 .nav ul {
 	/*1. ul with images had margin-bottom:10px set by bootstrap css. clearing that option then 
 	changed it to 14px but I couldn't find where that was configured. 
@@ -43,24 +40,22 @@
 	*/
 	margin:auto;
 }
-
 .nav ul.chart-types{
-	margin-top:15px;
-	margin-left:20px;
 
+	margin-top:8px;
+	/*margin-left:20px;*/
 }
 /*** Navigation ***/
 
 /*** Hero-Shot ***/
-	.hero-shot {
-			background-image: url(http://biopact.com/wp-content/uploads/2013/01/cropped-human-hand-holding-a-city.jpg);
-			width:auto;
-			height:400px;
-    	background-repeat: no-repeat;
-    	background-size: 100%;
-		}
+.hero-shot {
+		background-image: url(http://biopact.com/wp-content/uploads/2013/01/cropped-human-hand-holding-a-city.jpg);
+		width:auto;
+		height:400px;
+  	background-repeat: no-repeat;
+  	background-size: 100%;
+	}
 /*** Hero-Shot ***/
-
 /*** Main-Content ***/
 .main-content{
 	margin-left:10%;
@@ -72,19 +67,15 @@
 	padding-right: 5px;
 
 }
-
 .main-content .main{
 	width:100%;
 }
-
 .divider{
 		width:200px;
 		margin-top:40px;
 		margin-bottom:20px;
 		border: 3px solid #85b433;
-
 	}
-
 .number {
   width: 40px;
   background-color: #85b433;;
@@ -99,12 +90,10 @@
   line-height: 1.5em;
   font-size: 0.8em;
 }
-
 .intro { 
 	font-size: 18px;
 }
 /*** Main-Content ***/
-
 /*** D3 Specific ***/
 .Axis line {
 	stroke: #000;
@@ -116,29 +105,25 @@
 .Axis text {
 	font-size: 10px;
 }
-
 /** Scatterplot **/
 
-/****** Form    *******/
-  .switch {
-  position: absolute;
-  top: 20px;
-  left: 70px;
-	}		
-
-	.switch label:last-of-type{
-		margin-left:15px;
-	}
-
-	.switch input {
-		margin-left:5px;
-	}
-
-	.switch label{
-		font-weight: normal;
-		font-size:15px;
-	}
-/****** Form    *******/
+/****** Radio Button *******/
+.switch {
+	position: absolute;
+	top: 20px;
+	left: 70px;
+}		
+.switch label:last-of-type{
+	margin-left:15px;
+}
+.switch input {
+	margin-left:5px;
+}
+.switch label{
+	font-weight: normal;
+	font-size:15px;
+}
+/****** Radio Button *******/
 
 /** Tooltip **/
 .d3tooltip {
@@ -240,9 +225,111 @@
 		.clearfix {
 			clear:both;
 		}
+
+		#section2 .col-md-4{
+			padding-top:10px;
+		}
 /*** Bar Graph ***/
+
+/*** Line Graph ***/
+			path:hover {
+				fill: #EED6A5;
+			}
+			
+			.axis path,
+			.axis line {
+				fill: none;
+				stroke: black;
+				shape-rendering: crispEdges;
+			}
+			
+			.axis text {
+				font-family: sans-serif;
+				font-size: 11px;
+			}
+
+			.line { 
+			stroke: black;
+			stroke-width: 1px;
+		opacity: 0.7;
+			fill: none;
+			}
+
+			.line:hover { 
+			/*	stroke: green;*/
+				stroke-width:2px;
+				opacity:1;
+			}
+
+	/*			.lineChart {
+			position:relative;
+		}
+				#section3 {
+			position:relative;
+		}*/
+			.label{
+				font-size: small;
+				font-family: avenir;
+			}
+
+			.s3tooltip {
+		  position: absolute;
+			padding: 5px;
+		  pointer-events: none;
+		  border: 1px solid green;
+		  border-radius: 12px;
+			line-height: 20px;
+		  opacity: .07;
+		  background-color:white;
+
+		}
+
+			.tooltipTail {
+					position: absolute;
+				/*	width: 0; 
+					height: 0; */
+					border-top: 8px solid transparent;
+					border-bottom: 8px solid transparent; 
+			/*		border-right:25px solid green; */
+				}
+			.tooltipTail.hidden{
+				display:none;
+				opacity:0;
+			}
+
+	
+/*** Line Graph ***/
 
 /*** D3 Specific ***/
 
+  #modal {
+    position:absolute;
+    left: 50px;
+    top:0px;
+    z-index:1;
+    background: white;
+    border: 1px black solid;
+    box-shadow: 10px 10px 5px #888888;
+}
+  tr {
+    border: 1px gray solid;
+}
+  td {
+    font-size: 15px;
+    padding-right:20px;
+    padding-left:20px;
+    text-align: center;
+}
+td.data {
+    font-weight: 900;
+  }
+
+  .sideBar{
+  	height:400px;
+
+  }
+  .fcomponents {
+  	clear:both;
+  }
 
 
