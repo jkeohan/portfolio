@@ -39,33 +39,11 @@
 				.attr("height", h)
 				.append("g")
 
-							//Axes
-				svg.append("g")
-					.attr("class", "x axis")
-					.attr("transform", "translate(0," + (h - padding[2]) + ")")
-					.call(xAxis);
-
-				svg.append("g")
-					.attr("class", "y axis")
-					.attr("transform", "translate(" + (padding[3]) + ",0)")
-					.call(yAxis)
-                // Add rotated "Number of Headlines" unit of measure text to x-axis
-              .append("text")
-              .attr("class", "label")
-              .attr("transform", "rotate(-90)")
-              .attr("x", -20)
-              .attr("y", 5)
-              .attr("dy", ".91em")
-              .style("text-anchor", "end")
-              .text("Percent of Engery Generation ");
-                
-
 			var tooltip = d3.select(".lineChart").append("div") 
 				.attr("class","s3tooltip")
 
 			var tooltipTail = d3.select(".lineChart").append('div')
-					.attr("class","tooltipTail")
-					//.style("opacity",1)
+					.attr("class","tooltipTail hidden")
 			
 			var sideBar = d3.select(".sideBar").append("div").attr("id", "modal")
 			  .style("color", "black")
@@ -225,8 +203,7 @@
 
 
 				function circlemouseOver(d) {
-					var xy = d3.mouse(this)
-					console.log(xy)
+				
 					//console.log(d)
 					var location = d.location
 					path = d3.selectAll("path").filter(function(d) { return d["location"] === location})
@@ -249,12 +226,8 @@
 				function circlemouseOut(d) {
 				var location = d.location
 					path = d3.selectAll("path").filter(function(d) { return d["location"] === location})
-					path.style("stroke-width", 3)
-
-				var circles = d3.selectAll("circle").filter(function(c) {
-					return c.location == d.location
-				}).attr("r",0)
-			}
+					path.style("stroke-width", 10)
+				}
 			
 				function mouseOver(d,color) {
 					var location = d.location
@@ -279,13 +252,19 @@
 								     "<tr><td>2012</td>" + "<td>" + d.headlines[10].amount   + "</td></tr>" +
 								"</table>"
 					).style("background-color","rgba(214, 233, 198,0.5)" )
-						.style("border","solid 10px " + color)
+	//.style("border","solid 10px " + c)
 	//.style("background-color", "#d6e9c6" )
 					var circles = d3.selectAll("circle").filter(function(c) {
 						return c.location == d.location
 					}).attr("r",5).attr("fill",function(d) { return d.color})
 
 				}
+
+				// function getSortedKeys(obj) {
+			 //    var keys = []; for(var val in obj) keys.push(val);
+			 //    //console.log(keys)
+			 //    return keys.sort(function(a,b){return obj[a]-obj[b]});
+				// }
 
 				function mouseout(d){
 					var location = d.location
@@ -295,8 +274,6 @@
 					var circles = d3.selectAll("circle").filter(function(c) {
 						return c.location == d.location
 					}).attr("r",0)		
-					tooltip.transition().duration(500).style("opacity",0)
-					d3.select(".tooltipTail").classed("hidden",true)
 				}
 
 				function tooltip1 (d){
@@ -321,21 +298,35 @@
 					var currentYear = d.headlines
 					var tailX = w -70;
 					var tailY = yScale(+d.headlines[d.headlines.length -1 ].amount) 
-				  var tail = d3.selectAll(".tooltipTail").classed("hidden",false)
+				  var tail = d3.select(".tooltipTail").classed("hidden",false)
 				  .style("border-right" , "25px solid " + d.color)
 				  	.transition().duration(1000)
 						.style("left", tailX + 5 + "px")
 						.style("top", tailY -8 + "px")			
 				}
 
-	
+				//Axes
+				svg.append("g")
+					.attr("class", "x axis")
+					.attr("transform", "translate(0," + (h - padding[2]) + ")")
+					.call(xAxis);
+
+				svg.append("g")
+					.attr("class", "y axis")
+					.attr("transform", "translate(" + (padding[3]) + ",0)")
+					.call(yAxis)
+                // Add rotated "Number of Headlines" unit of measure text to x-axis
+              .append("text")
+              .attr("class", "label")
+              .attr("transform", "rotate(-90)")
+              .attr("x", -20)
+              .attr("y", 5)
+              .attr("dy", ".91em")
+              .style("text-anchor", "end")
+              .text("Percent of Engery Generation ");
+                
 
 			});
-			function getSortedKeys(obj) {
-			    var keys = []; for(var val in obj) keys.push(val);
-			    //console.log(keys)
-			    return keys.sort(function(a,b){return obj[a]-obj[b]});
-				}
 })()
 			//End USA data load function
 //1. Tooltip is positioned at top of page
