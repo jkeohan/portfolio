@@ -43,6 +43,7 @@ d3.csv("data/data_regions.csv", function(data) {
 		.values().filter(function(d) { return !(d == "World")}).sort(d3.acscending) 
 	colorScale.domain(regions)
 	var rlegend = d3.models.legend().fontSize(15).width(width).height(height).inputScale(colorScale)
+	svg.call(rlegend)
 
 	var yearMean = d3.nest().key(function(d) { return d["Region"] } ).sortKeys(d3.ascending)
 	  	.rollup(function(v) { 
@@ -71,17 +72,6 @@ d3.csv("data/data_regions.csv", function(data) {
 	}
 
 	var yearMeanNoWorld = yearMean.filter(function(d) { return !(d.key == "World") })
-	////////D3 Vertical Legend Reusable//////////////////////////
-	//var rlegend = d3.models.legend().fontSize(15).width(width).height(height).inputScale(colorScale)
-		// .on("mouseOver", function(d) { d3.select(this).transition().duration(1000).style("font-weight","bold") ;
-		// 	 mouseOver(d); 
-		// 	 //console.log(d)
-		// 	}) 
-		// .on("mouseOut", function(d) { d3.select(this).transition().duration(1000).style("font-weight","normal") ;
-	 //     mouseOut(d); 
-	 //   } )
-	svg.call(rlegend)
-	////////D3 Vertical Legend Reusable//////////////////////////
 
 	//Converted yearMean object to format consistent with csv import.  
 	var formatYear = (function () {
@@ -100,8 +90,6 @@ d3.csv("data/data_regions.csv", function(data) {
 		return array
 	}
 	)()
-
-
 
 	//Add radio buttons
 	var radio_buttons = d3.selectAll('.radio_buttons').on("click", function() {

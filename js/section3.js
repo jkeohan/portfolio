@@ -203,7 +203,7 @@
 
 
 				function circlemouseOver(d) {
-				
+
 					//console.log(d)
 					var location = d.location
 					path = d3.selectAll("path").filter(function(d) { return d["location"] === location})
@@ -226,7 +226,10 @@
 				function circlemouseOut(d) {
 				var location = d.location
 					path = d3.selectAll("path").filter(function(d) { return d["location"] === location})
-					path.style("stroke-width", 10)
+					path.style("stroke-width", 3)
+						var circles = d3.selectAll("circle").filter(function(c) {
+					return c.location == d.location
+				}).attr("r",0)
 				}
 			
 				function mouseOver(d,color) {
@@ -251,8 +254,17 @@
 								     "<tr><td>2011</td>" + "<td>" + d.headlines[9].amount   + "</td></tr>" +
 								     "<tr><td>2012</td>" + "<td>" + d.headlines[10].amount   + "</td></tr>" +
 								"</table>"
-					).style("background-color","rgba(214, 233, 198,0.5)" )
-	//.style("border","solid 10px " + c)
+								)
+	// 				).style("background-color","rgba(214, 233, 198,0.5)" )
+	// //.style("border","solid 10px " + c)
+	// //.style("background-color", "#d6e9c6" )
+	// 				var circles = d3.selectAll("circle").filter(function(c) {
+	// 					return c.location == d.location
+	// 				}).attr("r",5).attr("fill",function(d) { return d.color})
+
+
+					.style("background-color","rgba(214, 233, 198,0.5)" )
+						.style("border","solid 10px " + color)
 	//.style("background-color", "#d6e9c6" )
 					var circles = d3.selectAll("circle").filter(function(c) {
 						return c.location == d.location
@@ -273,7 +285,9 @@
 					//d3.selectAll("path").transition().style("stroke-width", 3)	
 					var circles = d3.selectAll("circle").filter(function(c) {
 						return c.location == d.location
-					}).attr("r",0)		
+					}).attr("r",0)	
+							ttooltip.transition().duration(500).style("opacity",0)
+					d3.select(".tooltipTail").classed("hidden",true)	
 				}
 
 				function tooltip1 (d){
@@ -304,6 +318,7 @@
 						.style("left", tailX + 5 + "px")
 						.style("top", tailY -8 + "px")			
 				}
+
 
 				//Axes
 				svg.append("g")
