@@ -43,27 +43,28 @@
 //CSV.......
       d3.csv("data/data_regions.csv", function(data) {
 
-      	var regions = d3.nest().key(function(d) { return d["Region"]}).sortKeys(d3.ascending).entries(data)
-      	regions = regions.filter(function(d) { return !(d.key == "World")})
-      
+      	var region = d3.set(data.map(function(d) { return d.Region } ) )
+					.values().filter(function(d) { return !(d == "World")}).sort(d3.acscending) 
+
+				colorScale.domain(region)
+
+      	var regions = d3.nest().key(function(d) { return d["Region"]})
+      		.sortKeys(d3.ascending)
+      		.entries(data)
+      		.filter(function(d) { return !(d.key == "World")})
+    
       	function colorize (regions) {
 					regions.forEach( function(d,i) {
-						d.color = colorScale(i);
+						d.color = colorScale(d.key);
 					})
 				}
 
 				colorize(regions)
 				
-				var rlegend = d3.models.legend().fontSize(15).width(width-160).height(height)
+				var rlegend = d3.models.legend().fontSize(15).width(width-160).height(height).inputScale(colorScale)
 				svg.datum(regions).call(rlegend)
       	data = data 
       	worldVal = data
-
-
-      	//Update scales
-      	// color.domain([9,data.length])
-
-      	//svg.append('g').attr("class", "x axis").attr("transform","translate(250,0)").call(xAxis)
 
       	var buttons = buttonYears.selectAll("div").data(years).enter().append("div")
 				.text(function(d) { return d})
@@ -71,8 +72,6 @@
 				.on("click", function(d) { clearInterval(playInterval); update(d) })
 
          playAll.on("click", function() {
-
-        
          	 svg.append("text")
 	    			.attr("class", "loading")
 				    .text("Loading ...").attr("font-size",20)

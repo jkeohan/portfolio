@@ -6,6 +6,7 @@
 		<script type="text/javascript" src="js/d3.min.js"></script>	
 		<script type="text/javascript" src="js/reusable.d3.charts.js"></script>
 		<script type="text/javascript" src="js/colorbrewer.js"></script>
+		<script src="https://rawgit.com/gka/d3-jetpack/master/d3-jetpack.js"></script>
 		<link rel="stylesheet"  href="http://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
 		<link rel="stylesheet" href="http://s3.amazonaws.com/codecademy-content/courses/ltp/css/bootstrap.css">
     <link rel="stylesheet" href="css/main.css">
@@ -13,13 +14,14 @@
 		<link href="http://fonts.googleapis.com/css?family=Lato:400,600" rel="stylesheet" type="text/css">
 		<link href="http://fonts.googleapis.com/css?family=Lato:400,600" rel="stylesheet" type="text/css">
 		<link href='http://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
+
 	</head>
 	<body>
     <div class="nav clearfix">
       <div class="container">
         <ul class="pull-left border">
-          	<li class="mainLogo"><a href="*"><img src="images/d3js.jpg" alt="D3"></a></li>
-		      	<li class="mainLogo" id="ocd"><a href="*"><img src="images/logo-oecd-embed@2x.png"></a></li>
+          	<li class="mainLogo"><a href="http://d3js.org/" target="_blank"><img src="images/d3js.jpg" alt="D3"></a></li>
+		      	<li class="mainLogo" id="ocd"><a href="https://data.oecd.org/energy/renewable-energy.htm" target="_blank"><img src="images/logo-oecd-embed@2x.png"></a></li>
         </ul>
         <ul class="pull-left chart-types">
           <li><a href="index.html#section1">Scatterplot</a></li>
@@ -37,61 +39,68 @@
 
   			<span>Source: </span><a href="https://data.oecd.org/energy/renewable-energy.htm#indicator-chart">https://data.oecd.org/energy</a>
     		<hr class="divider">
-    		<a name="section1"></a>
     	</div>
+    	<a name="section1"></a>
     	<div class="container main">
     		<h1><span class="number">1 </span>Scatter Plot on Regional Growth</h1>
     		<div class="row">
-    			<div class="col-md-8">
+    			<div class="col-md-8" id="reduceWidth">
     				<div class="switch">
-						<form>
-							<label>Regions<input type="radio" name="choice" value="Regions" class="radio_buttons" checked></label>
-							<label>Countries<input type="radio" name="choice" value="Countries" class="radio_buttons"></label>
-						</form>
+							<form>
+								<label>Regions<input type="radio" name="choice" value="Regions" class="radio_buttons" checked></label>
+								<label>Countries<input type="radio" name="choice" value="Countries" class="radio_buttons"></label>
+							</form>
 						</div>
-    				<div class="regionalstats"></div>
+    				<div class="regionalstats" ></div>
           </div>
-          <div class="col-md-4">
+          <div class="col-md-4" id="expandWidth">
           		<h3>Functional Components</h3>
-          		<p>Some of the components used in the formatting data, creating the scatterplot and adding additonal functionality included:</p>
+          		<p>Some of the d3.methods used in the importing and formatting data used to render the scatterplot included:</p>
+          		<table>
+          			<tr class="section1">
+          				<td>d3.csv</td>
+          				<td>d3.map</td>
+          				<td>d3.set</td>
+          				<td>d3.keys</td>
+          			</tr>
+          			<tr class="section1">
+          				<td>d3.mean</td>
+          				<td>d3.nest</td>
+          				<td>d3.extent</td>
+          				<td>d3.transition</td>
+          			</tr>
+          		</table>
+          		<br>
+          		<p>Additional functionality included:
           		<ul>
-          			<li>d3.csv</li>
-          			<li>d3.map</li>
-          			<li>d3.set</li>
-          			<li>d3.keys</li>
-        				<li>d3.mean</li>
-        				<li>d3.nest</li>
-        				<li>d3.extent</li>
-  							<li>d3.transition</li>
+          			<li>Resuable Legend Module</li>
           		</ul>
-          		<p>Additinally the legend was packaged as a reusable component following best practices outlined in the book: <a href="http://bleedingedgepress.com/our-books/developing-a-d3-js-edge/">Developing a D3.js Edge"</a> by Chris Viau.  It is called using d3.modlue.legend()
+          		<p>This component was created following best practices outlined by Chris Viau in his book: <a href="http://bleedingedgepress.com/our-books/developing-a-d3-js-edge/">Developing a D3.js Edge".</a> It is called using <code>d3.modlue.legend()</code>.
+          		<pre><code>var rlegend = d3.models.legend().fontSize(15).width(width-160).height(height).inputScale(colorScale)
+								svg.call(rlegend)
+							</code></pre>
+							Also the inputScale method was added after viewing Susie Lu's <a href="https://github.com/emeeks/d3-svg-legend">Reusable Legend</a> and Elijah Meeks <a href="https://github.com/emeeks/d3-svg-legend">d3.svg.legend</a> github.
           </div>
     		</div>
-    	</div>
-
     		<hr class="divider">
-    		<a name="section2"></a>
-	    	<div class="container main" id="section2">
-	    		<h1><span class="number">2 </span>Bar Graph On Country Growth</h1>
-	    		<div class="row">
-	    			<div class="col-md-8">
-		    			<div class="playAll"></div>
-							<div class="buttonContainer"></div>
-							<div class="clearfix"></div>
-	    				<div class="countrystats"></div>
-	          </div>
-	          <div class="col-md-4">
+    	</div>	
+    	<a name="section2"></a>
+	    <div class="container main" id="section2">
+	    	<h1><span class="number">2 </span>Bar Graph On Country Growth</h1>
+    		<div class="row">
+    			<div class="col-md-8">
+	    			<div class="playAll"></div>
+						<div class="buttonContainer"></div>
+						<div class="clearfix"></div>
+    				<div class="countrystats"></div>
+          </div>
+          <div class="col-md-4">
 	          <h3>Functional Components</h3>
-	          		<p>Although no new d3 functionality has been introduced and update() function has been configred to sequentially cycle through the years and executed by clicking the "PLAY ALL YEAR" line.  
-	          		<p>Once agian the <code>reusable legend</code> was incorporated into this design and executed as follows:<br>
-								<pre><code>var rlegend = d3.models.legend().fontSize(15).width(width-160).height(height)
-								svg.datum(regions).call(rlegend)
-							</code></pre>
-	          </div>    
-	    		</div>
+	          <p>New functionality includes the ablility to individually or sequentially cycle through the years by clicking the <code>"PLAY ALL YEARS"</code> button.  
+          </div>    
+				</div>
+				<hr class="divider">
     	</div>
-
-    		<hr class="divider">
     		<a name="section3"></a>
 	    	<div class="container main" id="section3">
 	    		<h1><span class="number">3 </span>Line Chart On Country Growth</h1>
@@ -101,10 +110,10 @@
 	          </div>
 	          <div class="col-md-4">
 	          	<div class="sideBar"></div>
-	          	<div class="fcomponents">
-	         
+	          	<div class="fcomponents"></div>
 	          </div>
-	    	
+	        </div>
+	      </div>
     </div>
 
     <script type="text/javascript" src="js/section1.js"></script>

@@ -1,7 +1,7 @@
 ( function () {
 var m = {top:50,bottom:60,left:70,right:150};
 var width = 650 - m.left - m.right;
-var height = 400 - m.top - m.bottom;
+var height = 500 - m.top - m.bottom;
 var currentYear = "2002";
 var tooltip;
 var grouped = true;
@@ -36,9 +36,14 @@ var xAxis = d3.svg.axis().scale(xScale).orient("bottom")
 	.append("text").style("text-anchor", "middle")
   		.attr({  class: "xlabel", x: width/2 , y: 50})
   		.text("2002 Renewable Energy Output").style("font-size",20)
-//API call for csv data
+//API call for csv data and all formatting of data
 d3.csv("data/data_regions.csv", function(data) {
 	//d3.nest to rollup Region and mean of years
+	var regions = d3.set(data.map(function(d) { return d.Region } ) )
+		.values().filter(function(d) { return !(d == "World")}).sort(d3.acscending) 
+	colorScale.domain(regions)
+	var rlegend = d3.models.legend().fontSize(15).width(width).height(height).inputScale(colorScale)
+
 	var yearMean = d3.nest().key(function(d) { return d["Region"] } ).sortKeys(d3.ascending)
 	  	.rollup(function(v) { 
 	  		//console.log(v)// [Object, Object]  each obj is a row of data
@@ -61,13 +66,13 @@ d3.csv("data/data_regions.csv", function(data) {
 
 	function colorize (yearMean) {
 		yearMean.forEach( function(d,i) {
-			d.color = colorScale(i);
+			d.color = colorScale(d.key);
 		})
 	}
 
 	var yearMeanNoWorld = yearMean.filter(function(d) { return !(d.key == "World") })
 	////////D3 Vertical Legend Reusable//////////////////////////
-	var rlegend = d3.models.legend().fontSize(15).width(width).height(height)
+	//var rlegend = d3.models.legend().fontSize(15).width(width).height(height).inputScale(colorScale)
 		// .on("mouseOver", function(d) { d3.select(this).transition().duration(1000).style("font-weight","bold") ;
 		// 	 mouseOver(d); 
 		// 	 //console.log(d)
@@ -75,24 +80,27 @@ d3.csv("data/data_regions.csv", function(data) {
 		// .on("mouseOut", function(d) { d3.select(this).transition().duration(1000).style("font-weight","normal") ;
 	 //     mouseOut(d); 
 	 //   } )
-	svg.datum(yearMeanNoWorld).call(rlegend)
+	svg.call(rlegend)
 	////////D3 Vertical Legend Reusable//////////////////////////
 
-
+	//Converted yearMean object to format consistent with csv import.  
 	var formatYear = (function () {
 		var array = []
 		yearMean.forEach(function(d) {
 			var obj = {};
 			obj["Region"] = d.key
 			obj["countries"] = d.values.countries
+			//d3.entries will create new array with key\value property names
 			d3.entries(d.values.mean).forEach(function(item) {
 				obj[item.key] = item.value
 			})
+			obj["color"] = d.color
 			array.push(obj)
 		})
 		return array
 	}
 	)()
+
 
 
 	//Add radio buttons
@@ -103,12 +111,10 @@ d3.csv("data/data_regions.csv", function(data) {
 	}	)
 	//Call the chart
 	regionChart(data,yearMean,currentYear,formatYear)
-})
+})//end csv
 
 function countryChart(data,year,yearMean,formatYear) { 
 	grouped = false;
-	console.log(data)
-
 	var yearMean = formatYear
 	var filterOutWorld = data.filter(function(d,i) { return !(d["Location"] == "World")} )
 	var locations = (data.filter(function(d) { return !(d.Location == "World") } ) ).map(function(d)  { return d.Location } )
@@ -179,7 +185,7 @@ function countryChart(data,year,yearMean,formatYear) {
 		.on("mouseout", mouseOut)
 		.append('title')
 
-	console.log(circles)
+
 
 	yScale.domain([0,d3.max(data, function(d) { return +d["2012"] + 7 } ) ] )//.range([height,0])
 	xScale.domain([0,d3.max(data, function(d) { return +d[year] + 4  } ) ] )//.range([0,width])
@@ -199,9 +205,6 @@ function countryChart(data,year,yearMean,formatYear) {
 
 function regionChart(data,yearMean,year,formatYear) {
 	grouped = true
-
-
-
 	var yearMean = formatYear.filter(function(d) { return !(d.Region == "World") })
 	//yearMean =  yearMean.filter(function(d) { return (d.Region == "Latin America" ) })
 	var filterOutWorld = data.filter(function(d,i) { return !(d["Location"] == "World")} )
@@ -225,8 +228,9 @@ function regionChart(data,yearMean,year,formatYear) {
 			//.attr("cx", function(d,i) { return xScale(+d[year]) })
 			.attr("radius",5)
 			.attr("class",function(d) { return d.Region + " " + "Region"})
-			.style("fill",function(d,i) { d.color = colorScale(i); return d.color})
-			.style("fill",function(d,i) { return d.color})
+			//.style("fill",function(d,i) { return d.color})
+			.style("fill",function(d,i) { 
+				return d.color})
 			//.style("opacity",0)
 			.on("mouseover", mouseOver)
 			.on("mouseout", mouseOut)
@@ -259,6 +263,7 @@ function regionChart(data,yearMean,year,formatYear) {
 }
 
 	function mouseOver(d) {
+
 		var c = d3.select(this)
 	 //	var cColor = d.color
 		var cx = +c.attr("cx")
