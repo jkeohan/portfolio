@@ -1,7 +1,7 @@
 (function() { 
 
 	var margin = {top:10,right:0,bottom:10,left:40},
-				width = 750 - margin.left - margin.right,
+				width = 650 - margin.left - margin.right,
 				height = 800 - margin.top - margin.bottom
 	var colorScale = d3.scale.category10()
 	var tempColor;
@@ -61,7 +61,7 @@
 
 				colorize(regions)
 				
-				var rlegend = d3.models.legend().fontSize(15).width(width-160).height(height).inputScale(colorScale)
+				var rlegend = d3.models.legend().fontSize(15).width(width-100).height(height).inputScale(colorScale)
 				svg.datum(regions).call(rlegend)
       	data = data 
       	worldVal = data
@@ -76,7 +76,7 @@
 	    			.attr("class", "loading")
 				    .text("Loading ...").attr("font-size",20)
 				    .attr("x", function () { return width/2; })
-				    .attr("y", function () { return height/2-5; });
+				    .attr("y", function () { return 30; });
 
            var i = 0;
            playInterval = setInterval(function() {

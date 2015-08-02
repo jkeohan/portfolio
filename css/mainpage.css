@@ -1,0 +1,16 @@
+p{
+	font-size:15px;
+	line-height: 31px !important;
+}
+
+.row.well-header{
+	margin-left:5px;
+}
+
+.row.well-header a{
+	float:right;
+	    margin-right: 20px;
+    margin-top: 15px;
+}
+
+

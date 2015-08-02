@@ -1,9 +1,10 @@
 	(function () { 
 	//Dimensions and padding
 				var margin = {top:20,right:30,bottom:50,left:50}
-			var w = 800- margin.left - margin.right;
+			var w = 700- margin.left - margin.right;
 			var h = 600 - margin.top - margin.bottom;
 			var tooltipcolor;
+			var iceland_active = true;
 		
 			var padding = [ 20, 10, 50, 50 ];  //Top, right, bottom, left
 			var colorScale = d3.scale.category10()
@@ -25,7 +26,8 @@
 				.tickFormat(function(d) { return dateFormat(d); });
 
 			var yAxis = d3.svg.axis().scale(yScale)
-				.orient("left");        
+				.orient("left")
+				.tickFormat(function(d) { return d + "%" } );     
 
 			//Configure line generator
 			var line = d3.svg.line()
@@ -122,14 +124,9 @@
 
 				//console.log(circleData)
 
-				var iceland = dataset.filter(function(d) { return d.location == "Iceland"})
-			
-				//mouseOver(iceland[0])
-				//Uncomment to log the original data to the console
-				 //console.log(data);
+				//tooltip1(iceland[0])
 
 				xScale.domain(d3.extent(years, function(d) { return dateFormat.parse(d)}))
-
 				yScale.domain([ d3.max(dataset, function(d) { return d3.max(d.headlines, function(d) {
 							return +d.amount; });
 					}),
@@ -184,7 +181,6 @@
 					.attr("d", function(d) { return line(d.headlines)} )
 					//.append("title").text(function(d) {return d.location})
 
-
 		var points = svg.selectAll("circle").data(circleData)
 
 		points.enter().append("circle")
@@ -202,8 +198,15 @@
 						//.append("title").text(function(d) { return d.value})
 
 
-				function circlemouseOver(d) {
+				if(iceland_active) {
+				var iceland = dataset.filter(function(d) { return d.location == "Iceland"})
+				mouseOver(iceland[0],"#7f7f7f")
+				//circlemouseOver(iceland[0])
+				tooltip1(iceland[0])
+				iceland_active = false;
+				}
 
+				function circlemouseOver(d) {
 					//console.log(d)
 					var location = d.location
 					path = d3.selectAll("path").filter(function(d) { return d["location"] === location})
@@ -233,8 +236,26 @@
 				}
 			
 				function mouseOver(d,color) {
+					if(iceland_active) { 
+						console.log("inside")
+						//mouseout(iceland[0])
+					}else {	path = d3.selectAll("path").filter(function(d) { return d["location"] === "Iceland"})
+									path.style("stroke-width", 3)
+									var circles = d3.selectAll("circle").filter(function(c) {return c.location == "Iceland" } ).attr("r",0)
+					}
+
+
+					// var year = d3.time.format("%Y")
+					// var xDate = xScale.invert(d3.mouse(this)[0])
+
+
+					// var xDate = x.invert(d3.mouse(this)[0]), //<-- give me the date at the x mouse position
+	   		 	// bisect = d3.bisector(function(d) { return d.date; }).left, //<-- set up a bisector to search the array for the closest point to the left
+	   			// idx = bisect(s.values, xDate); //<-- find that point given our mouse position
+             
 					var location = d.location
-					path = d3.selectAll("path").filter(function(d) { return d["location"] === location})
+					path = d3.selectAll("path").filter(function(d) { 
+						return d["location"] === location})
 					path.style("stroke-width", 10)
 					sideBar.html(
 								"<table> <tr>" +
@@ -346,3 +367,5 @@
 			//End USA data load function
 //1. Tooltip is positioned at top of page
 //RESOLUTION: changed code to select(".tooltip") instead of body
+//2. After adding Panel sideBar div positioned top left of page
+//RESOLUTION: 

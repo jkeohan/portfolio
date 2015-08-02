@@ -1,4 +1,5 @@
 
+
 /*** Navigation ***/
 .nav {
 	/*1. images overflowed below the nav...R=added overflow hidden and revmoved set height
@@ -56,10 +57,14 @@
   	background-size: 100%;
 	}
 /*** Hero-Shot ***/
+
 /*** Main-Content ***/
+#fitwidth{
+	max-width: 970px !important;
+}
 .main-content{
-	margin-left:10%;
-	margin-right:10%;
+	margin-left:5%;
+	margin-right:5%;
 	margin-top:-5%;
 	background: white;
 	padding-top:10px;
@@ -75,6 +80,7 @@
 		margin-top:40px;
 		margin-bottom:20px;
 		border: 3px solid #85b433;
+		clear:both;
 	}
 .number {
   width: 40px;
@@ -94,6 +100,7 @@
 	font-size: 18px;
 }
 /*** Main-Content ***/
+
 /*** D3 Specific ***/
 .Axis line {
 	stroke: #000;
@@ -112,7 +119,20 @@
 }
 
 #expandWidth{
-	width: 38% ;
+	width: 40% ;
+}
+
+.panel {
+	width: 420px;
+}
+
+.panel-heading{
+	text-align: center;
+}
+
+.panel-heading h3{
+	color:black;
+	margin:0px;
 }
 
 pre code{
@@ -173,15 +193,21 @@ pre code{
 /** Tooltip **/
 
 /** Table **/
+
+.table{
+	/*width:50%;*/
+}
 tr.section1{
 	border:white;
 	border-bottom: 1px solid #E7E7E7;
+
 }
 tr.section1:last-of-type{
 	border:white;
 }
 tr.section1 td{
 		border-right:1px solid #E7E7E7;;
+			font-size:15px !important;
 }
 tr.section1 td:last-of-type{
 		border-right:white;
@@ -225,7 +251,7 @@ tr.section1 td:last-of-type{
 			font-size:13px;
 		}
 		.playAll {
-			margin-left:55px;
+			margin-left:20px;
 			margin-bottom:5px;
 			cursor:pointer;
 		}
@@ -339,22 +365,24 @@ tr.section1 td:last-of-type{
     z-index:1;
     background: white;
     border: 1px black solid;
-    box-shadow: 10px 10px 5px #888888;
-    width:250px;
+    /*5px solid rgba(255, 255, 255, .5);*/
+    /*box-shadow: 10px 10px 5px #888888;*/
+    width:210px;
+
 }
 
 table{
-	width:250px;
+	width:200px;
 }
 
   tr {
     border: 1px gray solid;
-      width:250px;
+      width:200px;
       opacity:1;
 }
   td {
-    font-size: 15px;
-    padding-right:20px;
+    font-size: 8px;
+    padding-right:15px;
     padding-left:10px;
     text-align: center;
 /*    min-width: 125px;*/
@@ -366,6 +394,9 @@ td.data {
 
   .sideBar{
   	height:400px;
+  	position: absolute;
+    top: 40px;
+    right: 370px;
 
   }
   .fcomponents {

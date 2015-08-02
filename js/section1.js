@@ -42,6 +42,7 @@ d3.csv("data/data_regions.csv", function(data) {
 	var regions = d3.set(data.map(function(d) { return d.Region } ) )
 		.values().filter(function(d) { return !(d == "World")}).sort(d3.acscending) 
 	colorScale.domain(regions)
+
 	var rlegend = d3.models.legend().fontSize(15).width(width).height(height).inputScale(colorScale)
 	svg.call(rlegend)
 
@@ -92,11 +93,12 @@ d3.csv("data/data_regions.csv", function(data) {
 	)()
 
 	//Add radio buttons
-	var radio_buttons = d3.selectAll('.radio_buttons').on("click", function() {
-		var value = this.value
-		if(value == "Regions") { regionChart(data,yearMean,currentYear,formatYear) } 
-		else { countryChart(data,currentYear,yearMean,formatYear) }
-	}	)
+	var radio_buttons = d3.selectAll('.radio_buttons')
+		.on("click", function() {
+			var value = this.value
+			if(value == "Regions") { regionChart(data,yearMean,currentYear,formatYear) } 
+			else { countryChart(data,currentYear,yearMean,formatYear) }
+		}	)
 	//Call the chart
 	regionChart(data,yearMean,currentYear,formatYear)
 })//end csv
@@ -172,8 +174,6 @@ function countryChart(data,year,yearMean,formatYear) {
 		.on("mouseover", mouseOver)
 		.on("mouseout", mouseOut)
 		.append('title')
-
-
 
 	yScale.domain([0,d3.max(data, function(d) { return +d["2012"] + 7 } ) ] )//.range([height,0])
 	xScale.domain([0,d3.max(data, function(d) { return +d[year] + 4  } ) ] )//.range([0,width])
@@ -351,3 +351,8 @@ function regionChart(data,yearMean,year,formatYear) {
 })()
 //1. xAxis width for Region is 441px but for Country is 399px
 //RESOLUTION: 
+//2. After adding panel and id=expandwidth, id=reducewidth to section2 the hr divider 
+//wasn't applying the 40px margin-top and was placed directly under section1 col-md-8
+//RESOLUTION; This has something to do with Margin refers to another's element position not including its margins. You cannot sum margins.
+//as per http://stackoverflow.com/questions/14891152/css-margin-overlap-instead-of-giving-distance
+//Decided to add a 40px margin to section 1 col-md-8 
