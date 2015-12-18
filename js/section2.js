@@ -37,7 +37,7 @@
 			barGraphTitle.insert("h2").attr("class", "worldTotal").text("World Total: " )
 			playAll.text("▶ PLAY ALL YEARS");
 
-			svg.append('g').attr("class", "x axis").attr("transform","translate(120,0)").call(xAxis)
+			svg.append('g').attr("class", "x Axis").attr("transform","translate(120,0)").call(xAxis)
 
 
 //CSV.......
@@ -61,7 +61,7 @@
 
 				colorize(regions)
 				
-				var rlegend = d3.models.legend().fontSize(15).width(width-100).height(height).inputScale(colorScale)
+				var rlegend = d3.models.legend().fontSize(15).width(width-125).height(height).inputScale(colorScale)
 				svg.datum(regions).call(rlegend)
       	data = data 
       	worldVal = data

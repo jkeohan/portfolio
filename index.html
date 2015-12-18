@@ -17,6 +17,7 @@
 		<!-- Bootstrap -->
 		<link rel="stylesheet"  href="http://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
 		<link rel="stylesheet" href="http://s3.amazonaws.com/codecademy-content/courses/ltp/css/bootstrap.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
 		<!-- Custom CSS -->
     <link rel="stylesheet" href="css/mainpage.css">
 		<link href="http://fonts.googleapis.com/css?family=Lato:400,600" rel="stylesheet" type="text/css">
@@ -25,74 +26,47 @@
 		<link href='http://fonts.googleapis.com/css?family=Poiret+One' rel='stylesheet' type='text/css'>
 
 	</head>
-	</body>
+	<body>
+
 	<div class="container" style="padding:30px">
-		<div class="row">
-			<div class="col-md-3"><img src="images/profile.jpg" style="width:150px"></div>
-			<div class="col-md-9">
-				<h1>Joe Keohan</h1>
-				<p id="into>">Hello! I'm a freelance web developer, specialising in data visualisation and application development using D3, Angular, and React.  I help clients turn data into useful, elegant websites and interesting stories.
-				</p>
-			</div>
-		</div>
-		<hr>
-		<h2>Projects</h2>
-		<div class="row">
-		
-			<div class="col-md-6">
-				<div class="well project">
-					<div class="row well-header">
-						<h3 style="display:inline-block">Renewable Energy</h3> <span> <a href="https://github.com/jkeohan/d3dashboards" target="_blank" class="btn btn-success" role="button">GitHub</a></span>
-					</div>
-					<p>This site was created to demo several D3 charts and graphs developed as part of the "Data Visualization and Inforgaphics with D3" online course provided by JournalismCourses.org.</p>
-					<p>
-					The data set consisted of 41 countries and the percentage of their Renewable Energy production 2002 to 2012.</p>
+
+		<div class="logo">
+			<img class="mainlogo" src="images/d3js.jpg">
+			<a href ="/">Joe Keohan</a>
+		</div><!--logo-->
+		<div class="masthead">
+			<ul class="nav nav-pills pull-right">
+          <li class="active"><a ng-href="/#/">Home</a></li>
+          <li><a ng-href="#/about">About</a></li>
+          <li><a ng-href="#/feedback">What people have said</a></li>
+       <!--    <li><a href="/training">Meetups</a></li> -->
+       <!--    <li><a href="/articles">Articles</a></li> -->
+          <!-- <li  ><a href="/case-studies">Case Studies</a></li> -->
+          <!-- <li  ><a href="/news">News</a></li> -->
+          <!-- <li ><a href="/blog">Blog</a></li> -->
+       <!--    <li><a href="/contact">Contact</a></li> -->
+        </ul>
+
+        <div class="row">   	
 				<br>
-					<a href="renewable.html" target="_blank"><img src="images/oecd.jpg" alt="D3" style="width:100%"></a>
-				</div>
-			</div>
-
-			<div class="col-md-6">
-					<div class="well project">
-						<div class="row well-header">
-							<h3 style="display:inline-block">Program Overview Dashboard</h3> <span> <a href="https://github.com/jkeohan/d3dashboards" target="_blank" class="btn btn-success" role="button">GitHub</a></span>
-						</div>
-					<p>This dashboard utilizes the following D3 charts\graphs and functionality</p>
-					<ul>
-					<li>World Map plotting the cities participating in the program</li>
-					<li>Stacked Bar Chart displaying the regional program status</li>
-					<li>Pie Chart displaying total's of program status categories</li>
-					<li>Interactive Legend that filters one or more choices</li>
-					</ul>
-					<p>The site is currently hosted on heroku and was built using Node, Express and Bootstrap.</p>
-					<a href="http://d3js.org/" target="_blank"><img src="images/progoverview.jpg" alt="D3" style="width:100%"></a>
-				</div>
-			</div>	
+				<br>
+        <hr> 
+        </div>
+		</div><!--masthead-->
+		
 
 
-			<div class="col-md-6">
-					<div class="well project">
-						<div class="row well-header">
-							<h3 style="display:inline-block">Program Overview Dashboard</h3> <span> <a href="https://github.com/jkeohan/d3dashboards" target="_blank" class="btn btn-success" role="button">GitHub</a></span>
-						</div>
-					<p>This dashboard utilizes the following D3 charts\graphs and functionality</p>
-					<ul>
-					<li>World Map plotting the cities participating in the program</li>
-					<li>Stacked Bar Chart displaying the regional program status</li>
-					<li>Pie Chart displaying total's of program status categories</li>
-					<li>Interactive Legend that filters one or more choices</li>
-					</ul>
-					<p>The site is currently hosted on heroku and was built using Node, Express and Bootstrap.</p>
-					<a href="http://d3js.org/" target="_blank"><img src="images/progoverview.jpg" alt="D3" style="width:100%"></a>
-				</div>
-			</div>	
+	<div ng-view></div>
 
+	
 	</div>
-	<div class="main" ng-view>Hello</div>
-	<div class="panel panel-default">
-		<div class="panel-heading">Panel Heading</div>
-	</div>
-
+		<script>
+		var active = d3.selectAll("li")
+		active.on("click",function(d) {
+			d3.selectAll("li").classed("active",false)
+			d3.select(this).classed("active",true)
+		})
+		</script>
 	</body>
 	</html>
 

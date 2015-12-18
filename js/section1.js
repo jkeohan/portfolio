@@ -9,7 +9,8 @@ var grouped = true;
 var svg = d3.select(".regionalstats").append('svg')
 	.attr("width",width + m.left + m.right)
 	.attr("height", height + m.top + m.bottom)
-	.append('g').attr("transform","translate(" + m.left + "," + m.top + ")")//.attr("transform","translate(50,50)")
+	.append('g').translate([m.left,m.top])//testing jetpack
+	//.append('g').attr("transform","translate(" + m.left + "," + m.top + ")")//.attr("transform","translate(50,50)")
 
 //Create scales
 var yScale = d3.scale.linear().range([height,0]);
@@ -39,9 +40,13 @@ var xAxis = d3.svg.axis().scale(xScale).orient("bottom")
 //API call for csv data and all formatting of data
 d3.csv("data/data_regions.csv", function(data) {
 	//d3.nest to rollup Region and mean of years
-	var regions = d3.set(data.map(function(d) { return d.Region } ) )
+	var regions = d3.set(data.map(ƒ('Region')))//testing jetpack
 		.values().filter(function(d) { return !(d == "World")}).sort(d3.acscending) 
 	colorScale.domain(regions)
+
+	// 	var regions = d3.set(data.map(function(d) { return d.Region } ) )
+	// 	.values().filter(function(d) { return !(d == "World")}).sort(d3.acscending) 
+	// colorScale.domain(regions)
 
 	var rlegend = d3.models.legend().fontSize(15).width(width).height(height).inputScale(colorScale)
 	svg.call(rlegend)

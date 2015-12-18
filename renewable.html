@@ -27,8 +27,10 @@
     <div class="nav clearfix">
       <div class="container" id="fitwidth">
         <ul class="pull-left border">
-            <li class="mainLogo"><a href="http://d3js.org/" target="_blank"><img src="images/d3js.jpg" alt="D3"></a></li>
-            <li class="mainLogo" id="ocd"><a href="https://data.oecd.org/energy/renewable-energy.htm" target="_blank"><img src="images/logo-oecd-embed@2x.png"></a></li>
+            <li class="mainLogo"><a href="http://d3js.org/" target="_blank"><img src="https://raw.githubusercontent.com/jkeohan/portfolio/master/images/d3js.jpg" alt="D3"></a></li>
+            <!-- <li class="mainLogo"><a href="http://d3js.org/" target="_blank"><img src="images/d3js.jpg" alt="D3"></a></li> -->
+
+            <li class="mainLogo" id="ocd"><a href="https://data.oecd.org/energy/renewable-energy.htm" target="_blank"><img src="https://raw.githubusercontent.com/jkeohan/portfolio/master/images/logo-oecd-embed%402x.png"></a></li>
         </ul>
         <ul class="pull-left chart-types">
           <li><a href="index.html#section1">Scatterplot</a></li>
@@ -88,14 +90,14 @@
                   <li>Resuable Legend Module</li>
                 </ul>
                 <p>This component was created following best practices outlined by Chris Viau in his book: <a href="http://bleedingedgepress.com/our-books/developing-a-d3-js-edge/">Developing a D3.js Edge"</a> and is called using <code>d3.models.legend()</code>.</p>
-                <pre>
-                <code>
-  var rlegend = d3.models.legend()
+               
+                <pre><code>var rlegend = d3.models.legend()
     .fontSize(15)
     .width(width-160)
     .height(height)
-    .inputScale(colorScale)
-  svg.call(rlegend)
+    .inputScale(colorScale);
+
+svg.call(rlegend);
                 </code></pre>
               </div>
              </div>
@@ -138,17 +140,17 @@
   svg.append("text")
     .attr("class", "loading")
     .text("Loading ...").attr("font-size",20)
-    .attr("x",function() { return width/2; })
-    .attr("y",function() { return height/2-5; });
+    .attr("x",function(){return width/2})
+    .attr("y",function(){return height/2-5});
 
-   var i = 0;
-   playInterval = setInterval(function() {
+ var i = 0;
+ playInterval = setInterval(function() {
 
-    update(years[i]);
-    i++;
-    if(i > years.length - 1) { 
-      clearInterval(playInterval);}
-    }, 2000);
+  update(years[i]);
+  i++;
+  if(i > years.length - 1) { 
+    clearInterval(playInterval);}
+  }, 2000);
  });
          </code></pre>
               </div>
@@ -173,7 +175,7 @@
 
                   <table>
                     <tr class="section1">
-                      <td>d3.csv</td>
+                      <td>d3.time</td>
                       <td>d3.map</td>
                       <td>d3.set</td>
                       <td>d3.keys</td>
