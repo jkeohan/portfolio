@@ -9,6 +9,7 @@ myApp.config(['$routeProvider', function($routeProvider) {
 		.when('/feedback', { templateUrl: 'views/feedback.tpl.html'})
 		.when('/renewable', { templateUrl: 'views/renewable.html'})
 		.when('/wireframe', { templateUrl: 'views/wireframe.tpl.html'})
+		.when('/renewable-angular', { templateUrl: 'views/renewable_energy/index.html'})
 }])
 
 console.log("inside app")

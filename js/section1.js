@@ -1,4 +1,8 @@
 ( function () {
+
+function init() {
+
+}
 var m = {top:50,bottom:60,left:70,right:150};
 var width = 650 - m.left - m.right;
 var height = 500 - m.top - m.bottom;
@@ -15,8 +19,7 @@ var svg = d3.select(".regionalstats").append('svg')
 //Create scales
 var yScale = d3.scale.linear().range([height,0]);
 var xScale = d3.scale.linear().range([0,width]);
-var radiusScale = d3.scale.sqrt().range([6,20])
-//var radiusScale = d3.scale.linear().range([6,20])
+var radiusScale = d3.scale.sqrt().range([6,20])//scale.sqrt() used in place of .scale.linear()
 var colorScale = d3.scale.category10()
 
 //Create axises
@@ -215,16 +218,9 @@ function regionChart(data,yearMean,year,formatYear) {
 			.attr("r",20)
 
 		circles
-			//if x/y defined here then the newly added regions are 
-			//jumpted into position.  Not for a smooth transition
-			//.attr("cy", function(d,i) { return yScale(+d["2012"]) })
-			//.attr("cx", function(d,i) { return xScale(+d[year]) })
 			.attr("radius",5)
 			.attr("class",function(d) { return d.Region + " " + "Region"})
-			//.style("fill",function(d,i) { return d.color})
-			.style("fill",function(d,i) { 
-				return d.color})
-			//.style("opacity",0)
+			.style("fill",function(d,i) { return d.color })
 			.on("mouseover", mouseOver)
 			.on("mouseout", mouseOut)
 			.append('title')
@@ -278,16 +274,18 @@ function regionChart(data,yearMean,year,formatYear) {
 
 	function mouseOut(d) {
 
+		var transitionTime = 3000
+	
 		var c = d3.select(this)
-		c.transition().duration(250)
+		c.transition().duration(transitionTime)
 			.attr("stroke-width",0)
 			.attr("stroke", "rgba(230,230,230, .8)")
 			.attr("r",d.radius )
 
-		d3.selectAll(".line1").transition().duration(250).style("opacity",0).remove()
-		d3.selectAll(".line2").transition().duration(250).style("opacity",0).remove()
+		d3.selectAll(".line1").transition().duration(transitionTime).style("opacity",0).remove()
+		d3.selectAll(".line2").transition().duration(transitionTime).style("opacity",0).remove()
 
-		tooltip.transition().duration(250).style('opacity',0).remove()
+		tooltip.transition().duration(transitionTime).style('opacity',0).remove()
 	}
 
 	function createLine1() {
@@ -326,10 +324,10 @@ function regionChart(data,yearMean,year,formatYear) {
 				tooltip.html(
 				'<span class="regionName">' + d.Region + '</span><br/>' + 
 				'<hr  class="d3tooltiphr" style="border: 1px solid ' +  d.color + ' " ' +  '>' +
-				'<span class="key">2002:</span> <span class="value">' + +d["2002"] + '%</span><br/>'  + 
 				'<span class="key">2012:</span> <span class="value">' + +d["2012"] + '%</span><br/>' + 
+				'<span class="key">2002:</span> <span class="value">' + +d["2002"] + '%</span><br/>'  + 
 				'<hr class="d3tooltiphr" style="border: 1px solid ' +  d.color + ' " ' +  '>' +
-				'<span class="key">Countries:</span>  <span class="value">' + d.countries.length + '</span>')
+				'<span class="key">Countries:</span>  <span class="value"><a href="#">' + d.countries.length + '</a></span>')
 					.style("left", function() {
 				 if ((cx + 100) > width ) { return (cx -30) + "px" } 
 					else { return (cx + 100) + "px" } 
