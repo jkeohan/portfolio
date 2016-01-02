@@ -7,7 +7,7 @@ myApp.config(['$routeProvider', function($routeProvider) {
 		.when('/', { templateUrl: 'views/projects.tpl.html' })
 		.when('/about', { templateUrl: 'views/login.html' })
 		.when('/feedback', { templateUrl: 'views/feedback.tpl.html'})
-		//.when('/renewable', { templateUrl: 'views/renewable.html'})
+		.when('/renewable', { templateUrl: 'views/renewable.html'})
 		.when('/wireframe', { templateUrl: 'views/wireframe.tpl.html'})
 		//.when('/renewable-angular', { templateUrl: 'views/renewable_energy/index.html'})
 }])
