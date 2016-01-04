@@ -100,6 +100,10 @@
 .intro { 
 	font-size: 18px;
 }
+
+.section3 {
+	margin-top:20px;
+}
 /*** End Main-Content ***/
 
 /**** Start D3 Specific ****/
@@ -189,7 +193,7 @@ pre code{
 
 table{
 	margin:auto;
-	/*width:50%;*/
+	width:50%;
 }
 tr.section1{
 	border:white;
@@ -344,7 +348,7 @@ td {
   padding-right:15px;
   padding-left:10px;
   text-align: center;
-/*    min-width: 125px;*/
+    min-width: 125px;
 }
 td.data {
     font-weight: 900;

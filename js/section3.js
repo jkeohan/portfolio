@@ -223,6 +223,7 @@ function buildLineChart(){
 				//circlemouseOver(iceland[0])
 				tooltip1(iceland[0])
 				iceland_active = false;
+				tabulate(iceland,["2002","2003"])
 				}
 
 				function circlemouseOver(d) {
@@ -326,7 +327,7 @@ function buildLineChart(){
 					var circles = d3.selectAll("circle").filter(function(c) {
 						return c.location == d.location
 					}).attr("r",0)	
-							ttooltip.transition().duration(500).style("opacity",0)
+							tooltip.transition().duration(500).style("opacity",0)
 					d3.select(".tooltipTail").classed("hidden",true)	
 				}
 
@@ -336,8 +337,8 @@ function buildLineChart(){
 					text.attr("y", yScale(+d.headlines[d.headlines.length -1 ].amount) + 4 )
 
 					tooltip.style("opacity",0)
-	  				tooltip.style("border" , "3px solid " + d.color).transition().duration(1000).style("opacity",1)
-    				tooltip.html(
+	  			tooltip.style("border" , "3px solid " + d.color).transition().duration(1000).style("opacity",1)
+    			tooltip.html(
 						'<span class="countryName">' + d.location + '</span><br/>') //+ 
 						// '2012: <span class="value">' + d. + '%</span><br/>'  + 
 						// "2012"+ ": " + '<span class="value">' + "2010" + '%</span>')
@@ -345,7 +346,7 @@ function buildLineChart(){
 						// .style("left", (d3.event.pageX - 30) + "px")
 						// .style("top", (d3.event.pageY -50 ) + "px")
 					 	.style("left", w - 35 + "px")
-						.style("top", yl -18 + "px")
+						.style("top", yl - 15 + "px")
 					}
 
 				function tooltipTail (d) {
@@ -355,8 +356,8 @@ function buildLineChart(){
 				  var tail = d3.select(".tooltipTail").classed("hidden",false)
 				  .style("border-right" , "25px solid " + d.color)
 				  	.transition().duration(1000)
-						.style("left", tailX + 5 + "px")
-						.style("top", tailY -8 + "px")			
+						.style("left", tailX + 6 + "px")
+						.style("top", tailY - 8 + "px")			
 				}
 
 
@@ -382,6 +383,53 @@ function buildLineChart(){
                 
 
 			});
+
+	function tabulate(data) {
+		
+		console.log(data[0].headlines)
+		var table = d3.select(".tableData").append("table")
+			.style("width","100%")
+      .style("text-align","center")
+        thead = table.append("thead"),
+        tbody = table.append("tbody");
+    // append the header row
+    thead.append("tr")
+        .selectAll("th")
+        .data(data[0].headlines)
+        .enter()
+        .append("th")
+				.text(function(d,i) { 
+					//console.log(d.year,i)
+					return d.year
+				})
+    // create a row for each object in the data
+		var rows = tbody.selectAll("tr") .data(data)
+		        .enter()
+		        .append("tr");
+		//     // create a cell in each row for each column
+		var cells = rows.selectAll("td") .data(data[0].headlines, function(d,i) {
+			//row = Object {location: "Iceland", region: "Scandanavia", headlines: Array[11], color: "#7f7f7f"}
+				console.log(d.amount)
+				return d.amount
+				//return d.headlines[i].year
+				// return columns.map(function(column) {
+				// return {
+				// 	debugger;
+				// 	column: column, value: d.headlines[i].year == column};
+				// 			}); 
+			})
+		        .enter()
+		        .append("td")
+		        .attr("style", "font-family: Courier")
+		.html(function(d) { 
+			return d.amount
+			//return d.value; 
+		}); 
+		return table;
+}
+// render the table
+//var peopleTable = tabulate(data, ["2002","2003"]);
+
 })()
 			//End USA data load function
 //1. Tooltip is positioned at top of page
