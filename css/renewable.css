@@ -63,9 +63,10 @@
 /*** Start Main-Content ***/
 #fitwidth{
 	max-width: 970px !important;
+	margin-left:5%;
 }
 .main-content{
-	margin-left:5%;
+	margin-left:6%;
 	margin-right:5%;
 	margin-top:-5%;
 	background: white;
