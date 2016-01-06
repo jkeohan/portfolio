@@ -323,19 +323,19 @@ background-color:white;
 /**** End Tooltip ****/
 
 /**** Start Table ****/
-#modal {
+/*#modal {
   position:absolute;
   left: 50px;
   top:0px;
   z-index:1;
   background: white;
   border: 1px black solid;
-  /*5px solid rgba(255, 255, 255, .5);*/
-  /*box-shadow: 10px 10px 5px #888888;*/
-  width:210px;
+5px solid rgba(255, 255, 255, .5);
+  box-shadow: 10px 10px 5px #888888;
 }
+*/
 table{
-	width:200px;
+width:200px;
 	margin:auto;
 }
 tr {
@@ -344,21 +344,32 @@ tr {
     opacity:1;
 }
 td {
-  font-size: 8px;
+  font-size: 11px;
   padding-right:15px;
   padding-left:10px;
   text-align: center;
-    min-width: 125px;
+  
 }
-td.data {
+th {
+	font-weight: normal;
+}
+
+.tableData tr th {
+	    font-size: 12px;
+    text-align: center;
+}
+/*td.data {
     font-weight: 900;
-  }
+  }*/
 .sideBar{
 	height:400px;
 	position: absolute;
   top: 40px;
   right: 370px;
+}
 
+tr td.dataTable{
+	padding:0px;
 }
 .fcomponents {
 	clear:both;
@@ -367,8 +378,15 @@ td.data {
 /**** End Table ****/
 
 /*** End Line Graph ***/
+table { width: 100px; margin-bottom:10px; float:right;} 
+.test { margin-left: 10px;}
+.test h3 { border-bottom: 1px solid black;}
+.test p { clear:both;}
+.test p.percentChange { clear:both; border-top:1px solid black; margin-bottom:0px; padding-top:5px;}
+tr,th{text-align: center;}
+.test { width: 50%;}
+.clearfix { content:""; display:inline-block; clear:both;}
+.yearData { float:right; padding: 5px; border-bottom: 1px solid black}
 
-
-
-
+/*tr:nth-child(even) {background-color: #f2f2f2}*/
 

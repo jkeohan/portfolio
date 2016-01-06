@@ -193,6 +193,7 @@ function buildLineChart(){
 						tooltip1(d);
 						mouseOver.call(this,d,d.color)
 							//mouseOver(d,d.color)
+							tabulate([d])
 					})
 					.on("mouseout", function(d) {
 						mouseout(d)
@@ -223,7 +224,7 @@ function buildLineChart(){
 				//circlemouseOver(iceland[0])
 				tooltip1(iceland[0])
 				iceland_active = false;
-				tabulate(iceland,["2002","2003"])
+				tabulate(iceland)
 				}
 
 				function circlemouseOver(d) {
@@ -257,14 +258,14 @@ function buildLineChart(){
 			
 				function mouseOver(d,color) {
 					if(iceland_active) { 
-						console.log("inside")
+						console.log("inside",d)
 						//mouseout(iceland[0])
 					}else {	path = d3.selectAll("path").filter(function(d) { return d["location"] === "Iceland"})
 									path.style("stroke-width", 3)
 									var circles = d3.selectAll("circle").filter(function(c) {return c.location == "Iceland" } ).attr("r",0)
 					}
 
-
+					//tabulate(d)
 					// var year = d3.time.format("%Y")
 					// var xDate = xScale.invert(d3.mouse(this)[0])
 
@@ -277,36 +278,7 @@ function buildLineChart(){
 					path = d3.selectAll("path").filter(function(d) { 
 						return d["location"] === location})
 					path.style("stroke-width", 10)
-					// sideBar.html(
-					// 			"<table> <tr>" +
-					// 			        "<th></th>" +
-					// 			   " </tr>" +
-					// 			    "<tr><td>Country</td>" + "<td>" + d.location  + "</td></tr>" +
-					// 			     "<tr><td>Region</td>" + "<td>" + d.region  + "</td></tr>" +
-					// 			     "<tr><td>2002</td>" + "<td>" + d.headlines[0].amount  + "</td></tr>" +
-					// 			     "<tr><td>2003</td>" + "<td>" + d.headlines[1].amount   + "</td></tr>" +
-					// 			     "<tr><td>2004</td>" + "<td>" + d.headlines[2].amount   + "</td></tr>" +
-					// 			     "<tr><td>2005</td>" + "<td>" + d.headlines[3].amount   + "</td></tr>" +
-					// 			     "<tr><td>2006</td>" + "<td>" + d.headlines[4].amount  + "</td></tr>" +
-					// 			     "<tr><td>2007</td>" + "<td>" + d.headlines[5].amount   + "</td></tr>" +
-					// 			     "<tr><td>2008</td>" + "<td>" + d.headlines[6].amount   + "</td></tr>" +
-					// 			     "<tr><td>2009</td>" + "<td>" + d.headlines[7].amount   + "</td></tr>" +
-					// 			     "<tr><td>2010</td>" + "<td>" + d.headlines[8].amount  + "</td></tr>" +
-					// 			     "<tr><td>2011</td>" + "<td>" + d.headlines[9].amount   + "</td></tr>" +
-					// 			     "<tr><td>2012</td>" + "<td>" + d.headlines[10].amount   + "</td></tr>" +
-					// 			"</table>"
-					// 			)
-	// 				).style("background-color","rgba(214, 233, 198,0.5)" )
-	// //.style("border","solid 10px " + c)
-	// //.style("background-color", "#d6e9c6" )
-	// 				var circles = d3.selectAll("circle").filter(function(c) {
-	// 					return c.location == d.location
-	// 				}).attr("r",5).attr("fill",function(d) { return d.color})
-
-
-					// .style("background-color","rgba(214, 233, 198,0.5)" )
-					// 	.style("border","solid 10px " + color)
-	//.style("background-color", "#d6e9c6" )
+	
 					var circles = d3.selectAll("circle").filter(function(c) {
 						return c.location == d.location
 					}).attr("r",5).attr("fill",function(d) { return d.color})
@@ -386,7 +358,8 @@ function buildLineChart(){
 
 	function tabulate(data) {
 		
-		console.log(data[0].headlines)
+		//d3.selectAll('table').remove()
+		console.log(data)
 		var table = d3.select(".tableData").append("table")
 			.style("width","100%")
       .style("text-align","center")
@@ -405,26 +378,31 @@ function buildLineChart(){
     // create a row for each object in the data
 		var rows = tbody.selectAll("tr") .data(data)
 		        .enter()
-		        .append("tr");
+		        .append("tr")
+		        ;
 		//     // create a cell in each row for each column
-		var cells = rows.selectAll("td") .data(data[0].headlines, function(d,i) {
+		var cells = rows.selectAll("td") .data(data[0].headlines)//, function(d,i) {
 			//row = Object {location: "Iceland", region: "Scandanavia", headlines: Array[11], color: "#7f7f7f"}
-				console.log(d.amount)
-				return d.amount
+				//return d.amount
 				//return d.headlines[i].year
 				// return columns.map(function(column) {
 				// return {
 				// 	debugger;
 				// 	column: column, value: d.headlines[i].year == column};
 				// 			}); 
-			})
+			//})
+
+		cells
 		        .enter()
-		        .append("td")
+		        .append("td").classed("dataTable",true)
 		        .attr("style", "font-family: Courier")
 		.html(function(d) { 
 			return d.amount
 			//return d.value; 
 		}); 
+
+		cells.exit().remove()
+		
 		return table;
 }
 // render the table
@@ -435,4 +413,8 @@ function buildLineChart(){
 //1. Tooltip is positioned at top of page
 //RESOLUTION: changed code to select(".tooltip") instead of body
 //2. After adding Panel sideBar div positioned top left of page
+//RESOLUTION: 
+//3. Addd table but having issues with 
+//RESOLUTION:  
+//4.  Duplicate vals for years are only displayed once leaving blank cells
 //RESOLUTION: 
