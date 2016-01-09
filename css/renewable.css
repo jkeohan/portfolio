@@ -24,6 +24,8 @@
 /* 2. display: block: stacks the li's; */
 	display:inline-block;
 }
+.pull-left.border { padding-left:0px;}
+
 .pull-left.border li+li { 
 	border-left: 3px solid #FFB266; 
 /*	height:50px;*/
@@ -63,7 +65,11 @@
 /*** Start Main-Content ***/
 #fitwidth{
 	max-width: 970px !important;
-	margin-left:5%;
+	    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left:0px !important;
+    margin-left: 5%;
+
 }
 .main-content{
 	margin-left:6%;
@@ -100,6 +106,10 @@
 }
 .intro { 
 	font-size: 18px;
+}
+
+.section3 {
+	margin-top:20px;
 }
 /*** End Main-Content ***/
 
@@ -190,7 +200,7 @@ pre code{
 
 table{
 	margin:auto;
-	/*width:50%;*/
+	width:50%;
 }
 tr.section1{
 	border:white;
@@ -320,19 +330,19 @@ background-color:white;
 /**** End Tooltip ****/
 
 /**** Start Table ****/
-#modal {
+/*#modal {
   position:absolute;
   left: 50px;
   top:0px;
   z-index:1;
   background: white;
   border: 1px black solid;
-  /*5px solid rgba(255, 255, 255, .5);*/
-  /*box-shadow: 10px 10px 5px #888888;*/
-  width:210px;
+5px solid rgba(255, 255, 255, .5);
+  box-shadow: 10px 10px 5px #888888;
 }
+*/
 table{
-	width:200px;
+width:200px;
 	margin:auto;
 }
 tr {
@@ -341,20 +351,33 @@ tr {
     opacity:1;
 }
 td {
-  font-size: 8px;
-  padding-right:15px;
+  font-size: 11px;
+  padding-right:10px;
   padding-left:10px;
   text-align: center;
+
 }
-td.data {
+th {
+	font-weight: normal;
+}
+
+.tableData tr th {
+	    font-size: 12px;
+    text-align: center;
+
+}
+/*td.data {
     font-weight: 900;
-  }
+  }*/
 .sideBar{
 	height:400px;
 	position: absolute;
   top: 40px;
   right: 370px;
+}
 
+tr td.dataTable{
+	padding:0px;
 }
 .fcomponents {
 	clear:both;
@@ -364,7 +387,41 @@ td.data {
 
 /*** End Line Graph ***/
 
+table { width: 100px; margin-bottom:10px;     line-height: 2;
+    margin-top: 9px;} 
+.countryInfo { margin-left: 10px; }
+.countryInfo  h3 { border-bottom: 1px solid black;}
+.countryInfo  p { margin:0 auto;}
+.countryFlag { float:left;}
+tr,th{text-align: center; line-height: 1.6;}
+.countryInfo  { width: 95%;}
+.yearData { float:right; padding: 5px; border-bottom: 1px solid black}
+.yearValues { float: left;margin-left: 10px;}
+.percentChange { float:left; line-height: 1.6; }
+/* .countryFlag{
+    background-image: url("http://www.geonames.org/flags/x/ch.gif");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width:100px; height:70px;
+}*/
+.countryFlag img{
+     background-image: url("http://www.geonames.org/flags/x/ch.gif");
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    width:100px; height:70px;
+}
 
-
-
-
+.glyphicon { font-size: 40px; margin-left:10px;}
+/*tr:nth-child(even) {background-color: #f2f2f2}*/
+span.percent {margin-left: 10px;
+    /* line-height: .9px; */
+    position:absolute;
+    margin-left: 10px;
+    display: inline-block;
+    height: 50px;
+    margin-left: 10px;
+    line-height: 1.4;
+  }
+.panel.countryInfo-panel { padding-bottom:10px;}

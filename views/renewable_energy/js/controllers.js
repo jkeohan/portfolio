@@ -30,8 +30,9 @@ myApp.controller('ChartController', function($scope, $http) {
 		var year2012 = d3.format('.2f')( value.years[10].amount ) 
 		var change = d3.format('.0f')((year2012 - year2002)/year2002 * 100)
 		if(change < 0) {  $scope.updown = "down"; return change}
-		else { $scope.updown = "up"; return change }
-		return "up"
+		else if { $scope.updown = "up"; return change }
+		
+		//return "up"
 		};
 	};
 

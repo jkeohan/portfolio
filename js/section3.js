@@ -7,14 +7,26 @@
 d3.csv()
 
 //INITIALIZE ELEMENTS
-function init(){
+	
+	var countries = void 0;
+	var country = void 0;
+	var countryID = void 0;
 
-}
+init()
+
+function init(){
+		d3.xhr("https://restcountries.eu/rest/v1/all", function(data) { 
+		  countries = JSON.parse(data.response)
+		  console.log(country,countryID)
+		  buildLineChart() 
+		});
+		
+}//init
 
 //CREATE CHARTS\GRAPHS
 function buildLineChart(){
 	
-}
+
 
 //SUPPORTING FUNCTIONS
 
@@ -193,6 +205,8 @@ function buildLineChart(){
 						tooltip1(d);
 						mouseOver.call(this,d,d.color)
 							//mouseOver(d,d.color)
+							updateSection3Panel(d)
+							//tabulate([d])
 					})
 					.on("mouseout", function(d) {
 						mouseout(d)
@@ -223,6 +237,8 @@ function buildLineChart(){
 				//circlemouseOver(iceland[0])
 				tooltip1(iceland[0])
 				iceland_active = false;
+				updateSection3Panel(iceland[0])
+				//tabulate(iceland)
 				}
 
 				function circlemouseOver(d) {
@@ -256,14 +272,13 @@ function buildLineChart(){
 			
 				function mouseOver(d,color) {
 					if(iceland_active) { 
-						console.log("inside")
 						//mouseout(iceland[0])
 					}else {	path = d3.selectAll("path").filter(function(d) { return d["location"] === "Iceland"})
 									path.style("stroke-width", 3)
 									var circles = d3.selectAll("circle").filter(function(c) {return c.location == "Iceland" } ).attr("r",0)
 					}
 
-
+					//tabulate(d)
 					// var year = d3.time.format("%Y")
 					// var xDate = xScale.invert(d3.mouse(this)[0])
 
@@ -276,36 +291,7 @@ function buildLineChart(){
 					path = d3.selectAll("path").filter(function(d) { 
 						return d["location"] === location})
 					path.style("stroke-width", 10)
-					// sideBar.html(
-					// 			"<table> <tr>" +
-					// 			        "<th></th>" +
-					// 			   " </tr>" +
-					// 			    "<tr><td>Country</td>" + "<td>" + d.location  + "</td></tr>" +
-					// 			     "<tr><td>Region</td>" + "<td>" + d.region  + "</td></tr>" +
-					// 			     "<tr><td>2002</td>" + "<td>" + d.headlines[0].amount  + "</td></tr>" +
-					// 			     "<tr><td>2003</td>" + "<td>" + d.headlines[1].amount   + "</td></tr>" +
-					// 			     "<tr><td>2004</td>" + "<td>" + d.headlines[2].amount   + "</td></tr>" +
-					// 			     "<tr><td>2005</td>" + "<td>" + d.headlines[3].amount   + "</td></tr>" +
-					// 			     "<tr><td>2006</td>" + "<td>" + d.headlines[4].amount  + "</td></tr>" +
-					// 			     "<tr><td>2007</td>" + "<td>" + d.headlines[5].amount   + "</td></tr>" +
-					// 			     "<tr><td>2008</td>" + "<td>" + d.headlines[6].amount   + "</td></tr>" +
-					// 			     "<tr><td>2009</td>" + "<td>" + d.headlines[7].amount   + "</td></tr>" +
-					// 			     "<tr><td>2010</td>" + "<td>" + d.headlines[8].amount  + "</td></tr>" +
-					// 			     "<tr><td>2011</td>" + "<td>" + d.headlines[9].amount   + "</td></tr>" +
-					// 			     "<tr><td>2012</td>" + "<td>" + d.headlines[10].amount   + "</td></tr>" +
-					// 			"</table>"
-					// 			)
-	// 				).style("background-color","rgba(214, 233, 198,0.5)" )
-	// //.style("border","solid 10px " + c)
-	// //.style("background-color", "#d6e9c6" )
-	// 				var circles = d3.selectAll("circle").filter(function(c) {
-	// 					return c.location == d.location
-	// 				}).attr("r",5).attr("fill",function(d) { return d.color})
-
-
-					// .style("background-color","rgba(214, 233, 198,0.5)" )
-					// 	.style("border","solid 10px " + color)
-	//.style("background-color", "#d6e9c6" )
+	
 					var circles = d3.selectAll("circle").filter(function(c) {
 						return c.location == d.location
 					}).attr("r",5).attr("fill",function(d) { return d.color})
@@ -326,7 +312,7 @@ function buildLineChart(){
 					var circles = d3.selectAll("circle").filter(function(c) {
 						return c.location == d.location
 					}).attr("r",0)	
-							ttooltip.transition().duration(500).style("opacity",0)
+							tooltip.transition().duration(500).style("opacity",0)
 					d3.select(".tooltipTail").classed("hidden",true)	
 				}
 
@@ -336,8 +322,8 @@ function buildLineChart(){
 					text.attr("y", yScale(+d.headlines[d.headlines.length -1 ].amount) + 4 )
 
 					tooltip.style("opacity",0)
-	  				tooltip.style("border" , "3px solid " + d.color).transition().duration(1000).style("opacity",1)
-    				tooltip.html(
+	  			tooltip.style("border" , "3px solid " + d.color).transition().duration(1000).style("opacity",1)
+    			tooltip.html(
 						'<span class="countryName">' + d.location + '</span><br/>') //+ 
 						// '2012: <span class="value">' + d. + '%</span><br/>'  + 
 						// "2012"+ ": " + '<span class="value">' + "2010" + '%</span>')
@@ -345,7 +331,7 @@ function buildLineChart(){
 						// .style("left", (d3.event.pageX - 30) + "px")
 						// .style("top", (d3.event.pageY -50 ) + "px")
 					 	.style("left", w - 35 + "px")
-						.style("top", yl -18 + "px")
+						.style("top", yl - 20 + "px")
 					}
 
 				function tooltipTail (d) {
@@ -355,8 +341,8 @@ function buildLineChart(){
 				  var tail = d3.select(".tooltipTail").classed("hidden",false)
 				  .style("border-right" , "25px solid " + d.color)
 				  	.transition().duration(1000)
-						.style("left", tailX + 5 + "px")
-						.style("top", tailY -8 + "px")			
+						.style("left", tailX + 8 + "px")
+						.style("top", tailY - 9 + "px")			
 				}
 
 
@@ -382,9 +368,146 @@ function buildLineChart(){
                 
 
 			});
+
+	function updateSection3Panel(data) {
+	
+		console.log(data)
+
+			var location = data["location"]
+		  for(var i = 0 ; i < countries.length ; i++) {
+		  	if(location == countries[i].name) { 
+		  		country = countries[i].name
+		  		countryID = countries[i].alpha2Code.toLowerCase()
+		  		d3.select("#myImage").attr("src","http://www.geonames.org/flags/x/"+ countryID + ".gif")
+		  	}
+		  }
+
+		var change = calChange(data)
+		console.log(change)
+
+		console.log(data)
+		var cell2002 = void 0;
+		var cell2012 = void 0;
+
+		//glyphicon glyphicon-arrow-up
+
+		d3.select(".section3Title").text(data["location"])
+		d3.select(".year2002").text(data.headlines[0].amount)
+		d3.select(".year2012").text(data.headlines[data.headlines.length -1].amount)
+		d3.select(".countryInfo-panel").style("border-color",data.color)
+		d3.select(".percent").text(change.change + "%")
+
+		d3.select(".percentChange").style("color",change.color).classed(change.updown,true)
+
+		//query data for 
+
+		//section3Title.enter().html(data[0], function(d,i) { return d["location"]})
+	}//updateSection3Panel
+
+	function calChange(data) {
+		var updown = void 0;
+		var change = void 0;
+		var obj = {};
+		var year2002 = d3.format('.2f')(data.headlines[0].amount)
+		var year2012 = d3.format('.2f')(data.headlines[10].amount) 
+		var change = d3.format('.0f')((year2012 - year2002)/year2002 * 100)
+
+		if(change < 0) {  
+			updown = "glyphicon glyphicon-arrow-down"; 
+			d3.select(".percentChange").classed("glyphicon-arrow-up",false)
+			obj = { "updown":updown, "change": Math.abs(change),"color": "red"} 
+		} else if (change > 0) { 
+			updown = "glyphicon glyphicon-arrow-up";
+			d3.select(".percentChange").classed("glyphicon-arrow-down",false)  
+			obj = { "updown": updown, "change": change, "color": "green"} 
+		}
+		console.log(obj)
+		return obj
+	}
+	function tabulate(data) {
+		
+		//d3.selectAll('table').remove()
+		console.log(data)
+		var table = d3.select(".tableData").append("table")
+			.style("width","100%")
+      .style("text-align","center")
+        thead = table.append("thead"),
+        tbody = table.append("tbody");
+    // append the header row
+    thead.append("tr")
+        .selectAll("th")
+        .data(data[0].headlines)
+        .enter()
+        .append("th")
+				.text(function(d,i) { 
+					//console.log(d.year,i)
+					return d.year
+				})
+    // create a row for each object in the data
+		var rows = tbody.selectAll("tr") .data(data)
+		        .enter()
+		        .append("tr")
+		        ;
+		//     // create a cell in each row for each column
+		var cells = rows.selectAll("td") .data(data[0].headlines)//, function(d,i) {
+			//row = Object {location: "Iceland", region: "Scandanavia", headlines: Array[11], color: "#7f7f7f"}
+				//return d.amount
+				//return d.headlines[i].year
+				// return columns.map(function(column) {
+				// return {
+				// 	debugger;
+				// 	column: column, value: d.headlines[i].year == column};
+				// 			}); 
+			//})
+
+		cells
+		        .enter()
+		        .append("td").classed("dataTable",true)
+		        .attr("style", "font-family: Courier")
+		.html(function(d) { 
+			return d.amount
+			//return d.value; 
+		}); 
+
+		cells.exit().remove()
+		
+		return table;
+}
+
+function percentageChange(data) {
+		var updown = void 0;
+		if(value != null) {
+			var year2002 = d3.format('.2f')(data.years[0].amount )
+			var year2012 = d3.format('.2f')( data.years[10].amount ) 
+			var change = d3.format('.0f')((year2012 - year2002)/year2002 * 100)
+			if(change < 0) {  updown = "down"; return { "updown":"down", "change": change} } 
+			else { return { "updown":"down", "change": change} }
+		};
+};
+// render the table
+//var peopleTable = tabulate(data, ["2002","2003"]);
+
+
+
+
+}
 })()
+
+
 			//End USA data load function
 //1. Tooltip is positioned at top of page
 //RESOLUTION: changed code to select(".tooltip") instead of body
+<<<<<<< HEAD
 //2. After addings sec3 sidepanel for tooltip info nav elements are repositioned right several px's and 
 //   padding is missing
+=======
+//2. After adding Panel sideBar div positioned top left of page
+//RESOLUTION: added the following to .container #fixwidth 
+//    padding-bottom: 15px;
+//    padding-left:0px !important;
+//    margin-left: 5%;
+//  -removed the following to .pull-left-border
+//    .pull-left.border { padding-left:0px;}
+//3. Negative % vals in sidebar tooltip displays - symbol
+//RESOLUTION:  fornated the numbers using Math.abs()...this returns it's absolute value
+>>>>>>> adding_table
