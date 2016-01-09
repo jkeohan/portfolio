@@ -497,10 +497,10 @@ function percentageChange(data) {
 			//End USA data load function
 //1. Tooltip is positioned at top of page
 //RESOLUTION: changed code to select(".tooltip") instead of body
-<<<<<<< HEAD
+
 //2. After addings sec3 sidepanel for tooltip info nav elements are repositioned right several px's and 
 //   padding is missing
-=======
+
 //2. After adding Panel sideBar div positioned top left of page
 //RESOLUTION: added the following to .container #fixwidth 
 //    padding-bottom: 15px;
@@ -510,4 +510,4 @@ function percentageChange(data) {
 //    .pull-left.border { padding-left:0px;}
 //3. Negative % vals in sidebar tooltip displays - symbol
 //RESOLUTION:  fornated the numbers using Math.abs()...this returns it's absolute value
->>>>>>> adding_table
+
