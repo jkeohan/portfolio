@@ -24,6 +24,8 @@
 /* 2. display: block: stacks the li's; */
 	display:inline-block;
 }
+.pull-left.border { padding-left:0px;}
+
 .pull-left.border li+li { 
 	border-left: 3px solid #FFB266; 
 /*	height:50px;*/
@@ -63,6 +65,10 @@
 /*** Start Main-Content ***/
 #fitwidth{
 	max-width: 970px !important;
+	    padding-top: 15px;
+    padding-bottom: 15px;
+    padding-left:0px !important;
+    margin-left: 5%;
 }
 .main-content{
 	margin-left:5%;

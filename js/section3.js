@@ -498,8 +498,11 @@ function percentageChange(data) {
 //1. Tooltip is positioned at top of page
 //RESOLUTION: changed code to select(".tooltip") instead of body
 //2. After adding Panel sideBar div positioned top left of page
-//RESOLUTION: 
-//3. Addd table but having issues with 
-//RESOLUTION:  
-//4.  Duplicate vals for years are only displayed once leaving blank cells
-//RESOLUTION: 
+//RESOLUTION: added the following to .container #fixwidth 
+//    padding-bottom: 15px;
+//    padding-left:0px !important;
+//    margin-left: 5%;
+//  -removed the following to .pull-left-border
+//    .pull-left.border { padding-left:0px;}
+//3. Negative % vals in sidebar tooltip displays - symbol
+//RESOLUTION:  fornated the numbers using Math.abs()...this returns it's absolute value
