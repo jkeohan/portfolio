@@ -386,5 +386,5 @@ function buildLineChart(){
 			//End USA data load function
 //1. Tooltip is positioned at top of page
 //RESOLUTION: changed code to select(".tooltip") instead of body
-//2. After adding Panel sideBar div positioned top left of page
-//RESOLUTION: 
+//2. After addings sec3 sidepanel for tooltip info nav elements are repositioned right several px's and 
+//   padding is missing
