@@ -15,7 +15,12 @@
     <script src="angular/app.js"></script>
 
     <link rel="stylesheet"  href="http://cdnjs.cloudflare.com/ajax/libs/normalize/3.0.3/normalize.min.css">
-    <link rel="stylesheet" href="http://s3.amazonaws.com/codecademy-content/courses/ltp/css/bootstrap.css">
+    <!--BOOTSTRAP-->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
+
+    <link rel='stylesheet' href="//cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="css/renewable.css">
     <link href="http://fonts.googleapis.com/css?family=Lato:400,600" rel="stylesheet" type="text/css">
     <link href="http://fonts.googleapis.com/css?family=Lato:400,600" rel="stylesheet" type="text/css">
@@ -83,7 +88,6 @@
                     <td>d3.transition</td>
                   </tr>
                 </table>
-                <br>
                 <p>Additional functionality included:
                 <ul>
                   <li>Radio Buttons that transition regions/countries</li>
@@ -119,7 +123,6 @@ svg.call(rlegend);
               <div class="panel-heading"><h3>Functional Components</h3></div>
                 <div class="panel-body">
                 <p>Some of the d3.methods used in the importing and formatting data used to render the scatterplot included:</p>
-
                 <table>
                   <tr class="section1">
                     <td>d3.csv</td>
@@ -134,7 +137,6 @@ svg.call(rlegend);
                     <td>d3.transition</td>
                   </tr>
                 </table>
-                <br>
                 <p>Additional functionality includes the ablility to sequentially cycle through the years by adding an "on click" eventreceiver to <code>"PLAY ALL YEARS"</code> button.</p>
                 <pre><code> playAll.on("click", function() {
   svg.append("text")
@@ -169,11 +171,34 @@ svg.call(rlegend);
               <div class="sideBar"></div>
             </div>
             <div class="col-md-4" id="expandWidth">
-              <div class="panel panel-success section3">
+            
+              <div class="panel panel-success countryInfo-panel">
+               <!--   <div class="panel-heading"><h3>Iceland</h3></div> -->
+                  <div class="countryInfo clearfix">
+                    <h3 class="section3Title">Iceland</h3>
+                    <div>
+                     <div class="countryFlag"><img id='myImage' src="http://www.geonames.org/flags/x/ch.gif" /></div>
+                    <div class="yearValues">
+                      <table>
+                        <tr class="section1">
+                        <td><strong>2002</strong></td>
+                          <td class="year2002">75</td>
+                        </tr>
+                        <tr class="section1">
+                          <td><strong>2012</strong></td>
+                          <td class="year2012">84.7</td>
+                        </tr>
+                      </table>
+                    </div>
+                    <div class="percentChange"><span class="percent"></span>
+                  </div><!--percentChange-->
+                </div><!--countryInfo -->
+              </div>
+              </div><!--panel panel-success-->
+                <div class="panel panel-success section3">
                 <div class="panel-heading"><h3>Functional Components</h3></div>
                   <div class="panel-body">
                   <p>Some of the d3.methods used in the importing and formatting data used to render the scatterplot included:</p>
-
                   <table>
                     <tr class="section1">
                       <td>d3.time</td>
@@ -188,7 +213,6 @@ svg.call(rlegend);
                       <td>d3.transition</td>
                     </tr>
                   </table>
-                  <br>
                   <p>Additional functionality includes:
                   <ul>
                     <li>Sliding tooltip</li>
@@ -197,30 +221,7 @@ svg.call(rlegend);
                   </ul>
                     </p>
                 </div>
-              </div> 
-              <div class="panel panel-success">
-                <div class="panel-heading">Table for country info</div>
-              <!--   <div class="tableData"></div> -->
-                <div class="test clearfix">
-                  <h3>Iceland</h3>
-                   <table>
-                    <tr class="section1">
-                      <td>2002</td>
-                      <td>10</td>
-                    </tr>
-                    <tr class="section1">
-                      <td>2012</td>
-                      <td>30</td>
-                    </tr>
-                  </table>
-       
-                    <p class="percentChange">Iceland is up -8% since 2002</p>
-                    <p>Rank: <span>10 out of 41</span></p>
-
-
-
-                </div>
-              </div>
+              </div> <!--panel panel-success section3-->
             </div>
          </div>
       </div>

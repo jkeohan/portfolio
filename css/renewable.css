@@ -345,7 +345,7 @@ tr {
 }
 td {
   font-size: 11px;
-  padding-right:15px;
+  padding-right:10px;
   padding-left:10px;
   text-align: center;
   
@@ -378,15 +378,42 @@ tr td.dataTable{
 /**** End Table ****/
 
 /*** End Line Graph ***/
-table { width: 100px; margin-bottom:10px; float:right;} 
-.test { margin-left: 10px;}
-.test h3 { border-bottom: 1px solid black;}
-.test p { clear:both;}
-.test p.percentChange { clear:both; border-top:1px solid black; margin-bottom:0px; padding-top:5px;}
-tr,th{text-align: center;}
-.test { width: 50%;}
-.clearfix { content:""; display:inline-block; clear:both;}
+
+table { width: 100px; margin-bottom:10px;     line-height: 2;
+    margin-top: 9px;} 
+.countryInfo { margin-left: 10px; }
+.countryInfo  h3 { border-bottom: 1px solid black;}
+.countryInfo  p { margin:0 auto;}
+.countryFlag { float:left;}
+tr,th{text-align: center; line-height: 1.6;}
+.countryInfo  { width: 95%;}
 .yearData { float:right; padding: 5px; border-bottom: 1px solid black}
+.yearValues { float: left;margin-left: 10px;}
+.percentChange { float:left; line-height: 1.6; }
+/* .countryFlag{
+    background-image: url("http://www.geonames.org/flags/x/ch.gif");
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    width:100px; height:70px;
+}*/
+.countryFlag img{
+     background-image: url("http://www.geonames.org/flags/x/ch.gif");
+    background-size: auto;
+    background-repeat: no-repeat;
+    background-position: center;
+    width:100px; height:70px;
+}
 
+.glyphicon { font-size: 40px; margin-left:10px;}
 /*tr:nth-child(even) {background-color: #f2f2f2}*/
-
+span.percent {margin-left: 10px;
+    /* line-height: .9px; */
+    position:absolute;
+    margin-left: 10px;
+    display: inline-block;
+    height: 50px;
+    margin-left: 10px;
+    line-height: 1.4;
+  }
+.panel.countryInfo-panel { padding-bottom:10px;}

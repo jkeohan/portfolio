@@ -7,14 +7,26 @@
 d3.csv()
 
 //INITIALIZE ELEMENTS
-function init(){
+	
+	var countries = void 0;
+	var country = void 0;
+	var countryID = void 0;
 
-}
+init()
+
+function init(){
+		d3.xhr("https://restcountries.eu/rest/v1/all", function(data) { 
+		  countries = JSON.parse(data.response)
+		  console.log(country,countryID)
+		  buildLineChart() 
+		});
+		
+}//init
 
 //CREATE CHARTS\GRAPHS
 function buildLineChart(){
 	
-}
+
 
 //SUPPORTING FUNCTIONS
 
@@ -193,7 +205,8 @@ function buildLineChart(){
 						tooltip1(d);
 						mouseOver.call(this,d,d.color)
 							//mouseOver(d,d.color)
-							tabulate([d])
+							updateSection3Panel(d)
+							//tabulate([d])
 					})
 					.on("mouseout", function(d) {
 						mouseout(d)
@@ -224,7 +237,8 @@ function buildLineChart(){
 				//circlemouseOver(iceland[0])
 				tooltip1(iceland[0])
 				iceland_active = false;
-				tabulate(iceland)
+				updateSection3Panel(iceland[0])
+				//tabulate(iceland)
 				}
 
 				function circlemouseOver(d) {
@@ -258,7 +272,6 @@ function buildLineChart(){
 			
 				function mouseOver(d,color) {
 					if(iceland_active) { 
-						console.log("inside",d)
 						//mouseout(iceland[0])
 					}else {	path = d3.selectAll("path").filter(function(d) { return d["location"] === "Iceland"})
 									path.style("stroke-width", 3)
@@ -318,7 +331,7 @@ function buildLineChart(){
 						// .style("left", (d3.event.pageX - 30) + "px")
 						// .style("top", (d3.event.pageY -50 ) + "px")
 					 	.style("left", w - 35 + "px")
-						.style("top", yl - 15 + "px")
+						.style("top", yl - 20 + "px")
 					}
 
 				function tooltipTail (d) {
@@ -328,8 +341,8 @@ function buildLineChart(){
 				  var tail = d3.select(".tooltipTail").classed("hidden",false)
 				  .style("border-right" , "25px solid " + d.color)
 				  	.transition().duration(1000)
-						.style("left", tailX + 6 + "px")
-						.style("top", tailY - 8 + "px")			
+						.style("left", tailX + 8 + "px")
+						.style("top", tailY - 9 + "px")			
 				}
 
 
@@ -356,6 +369,61 @@ function buildLineChart(){
 
 			});
 
+	function updateSection3Panel(data) {
+	
+		console.log(data)
+
+			var location = data["location"]
+		  for(var i = 0 ; i < countries.length ; i++) {
+		  	if(location == countries[i].name) { 
+		  		country = countries[i].name
+		  		countryID = countries[i].alpha2Code.toLowerCase()
+		  		d3.select("#myImage").attr("src","http://www.geonames.org/flags/x/"+ countryID + ".gif")
+		  	}
+		  }
+
+		var change = calChange(data)
+		console.log(change)
+
+		console.log(data)
+		var cell2002 = void 0;
+		var cell2012 = void 0;
+
+		//glyphicon glyphicon-arrow-up
+
+		d3.select(".section3Title").text(data["location"])
+		d3.select(".year2002").text(data.headlines[0].amount)
+		d3.select(".year2012").text(data.headlines[data.headlines.length -1].amount)
+		d3.select(".countryInfo-panel").style("border-color",data.color)
+		d3.select(".percent").text(change.change + "%")
+
+		d3.select(".percentChange").style("color",change.color).classed(change.updown,true)
+
+		//query data for 
+
+		//section3Title.enter().html(data[0], function(d,i) { return d["location"]})
+	}//updateSection3Panel
+
+	function calChange(data) {
+		var updown = void 0;
+		var change = void 0;
+		var obj = {};
+		var year2002 = d3.format('.2f')(data.headlines[0].amount)
+		var year2012 = d3.format('.2f')(data.headlines[10].amount) 
+		var change = d3.format('.0f')((year2012 - year2002)/year2002 * 100)
+
+		if(change < 0) {  
+			updown = "glyphicon glyphicon-arrow-down"; 
+			d3.select(".percentChange").classed("glyphicon-arrow-up",false)
+			obj = { "updown":updown, "change": Math.abs(change),"color": "red"} 
+		} else if (change > 0) { 
+			updown = "glyphicon glyphicon-arrow-up";
+			d3.select(".percentChange").classed("glyphicon-arrow-down",false)  
+			obj = { "updown": updown, "change": change, "color": "green"} 
+		}
+		console.log(obj)
+		return obj
+	}
 	function tabulate(data) {
 		
 		//d3.selectAll('table').remove()
@@ -405,10 +473,27 @@ function buildLineChart(){
 		
 		return table;
 }
+
+function percentageChange(data) {
+		var updown = void 0;
+		if(value != null) {
+			var year2002 = d3.format('.2f')(data.years[0].amount )
+			var year2012 = d3.format('.2f')( data.years[10].amount ) 
+			var change = d3.format('.0f')((year2012 - year2002)/year2002 * 100)
+			if(change < 0) {  updown = "down"; return { "updown":"down", "change": change} } 
+			else { return { "updown":"down", "change": change} }
+		};
+};
 // render the table
 //var peopleTable = tabulate(data, ["2002","2003"]);
 
+
+
+
+}
 })()
+
+
 			//End USA data load function
 //1. Tooltip is positioned at top of page
 //RESOLUTION: changed code to select(".tooltip") instead of body
