@@ -30,11 +30,10 @@ myApp.controller('ChartController', function($scope, $http) {
 		var year2012 = d3.format('.2f')( value.years[10].amount ) 
 		var change = d3.format('.0f')((year2012 - year2002)/year2002 * 100)
 		if(change < 0) {  $scope.updown = "down"; return change}
-		else if { $scope.updown = "up"; return change }
-		
+		else { $scope.updown = "up"; return change }
 		//return "up"
-		};
-	};
+		};//end if
+	};//end $scope.percentage
 
 	d3.csv('data/data_regions.csv', function(data) {
     dateFormat = d3.time.format("%Y");   
@@ -75,10 +74,9 @@ myApp.controller('ChartController', function($scope, $http) {
 	// 	throw err; 
 	// })
 	
+	//THE FILTERED VARIABLE IS BEING EVALUATED IN HTML
 	$scope.$watch('filtered', function(newValue, oldValue) {
 			if (newValue !== oldValue) {dashboard(newValue) }
-			// console.log("newValue is: ")
-			// console.log(newValue)
 	  },true)
 
 	//THE FILTERED VARIABLE CAN ALSO BE EVALUATED IN CONTROLLER

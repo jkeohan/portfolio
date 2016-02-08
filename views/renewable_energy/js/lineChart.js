@@ -10,10 +10,12 @@
   }
 
 	function dashboard(data) { 
+			console.log(data)
 			createLineChart(data,".lineChart")
 			filterLegend(data,".legend")
 			redraw()
 	};
+
 	//FilterLegend is executed as .legend class as: .on("onClick", filterLegend);
 	function filterLegend(legend) {
 		// var active = d3.selectAll(targetDiv).active ? "false" : "true"

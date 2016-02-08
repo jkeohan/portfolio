@@ -91,15 +91,17 @@
 	clear:both;
 	}
 .number {
+	display: inline-block;
   width: 40px;
-  background-color: #85b433;;
-  color: #fff;
   height: 40px;
-  text-align: center;
-  display: inline-block;
-  vertical-align: middle;
   margin-right: 10px;
   margin-top: -10px;
+  vertical-align: middle;
+
+  background-color: #85b433;
+
+  color: #fff;
+  text-align: center;
   font-weight: 300;
   line-height: 1.5em;
   font-size: 0.8em;
