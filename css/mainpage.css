@@ -125,3 +125,9 @@ p{
 .row.well-header {
 	margin-bottom:-10px;
 }
+
+span .fa-smile-o {
+  float: left;
+  position: absolute;
+  left: 317px;
+}

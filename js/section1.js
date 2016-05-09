@@ -289,18 +289,24 @@ function regionChart(data,yearMean,year,formatYear) {
 	}
 
 	function createLine1() {
+				d3.selectAll(".line1").remove()
 				this
-				.attr("x1",xScale(0) )
-				.attr("y1", yScale(+this.datum()["2012"] )  )
+				.attr("x1", xScale(+this.datum()[currentYear]) )
+				.attr("y1", yScale(+this.datum()["2012"]) )
 				.attr("x2", xScale(+this.datum()[currentYear]) )
 				.attr("y2", yScale(+this.datum()["2012"]) )
 				.attr("stroke-width", 1)
 				.attr("stroke", this.datum()["color"] ) //d3.select(this).style("fill")  )
 				.style("opacity",1)
 				.attr("class","line1")
+				.transition().duration(500)
+				.attr("x2",xScale(0) )
+				.attr("y2", yScale(+this.datum()["2012"] )  )
+			
 	}
 
 	function createLine2(){
+		d3.selectAll(".line2").remove()
 			this
 				.attr("x1", xScale(+this.datum()[currentYear])  )
 				.attr("y1", height )
@@ -314,6 +320,7 @@ function regionChart(data,yearMean,year,formatYear) {
 	}
 	function displayToolTip(selection,d,cx,cy) { 
 
+			d3.selectAll(".d3tooltip").remove()
 			tooltip = d3.select(".regionalstats").append("div").attr("class","d3tooltip")
 			tooltip.style("font-size", 10)
 			tooltip.style("border" , "3px solid " + d.color )

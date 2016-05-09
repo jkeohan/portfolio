@@ -12,7 +12,7 @@ d3.models.legend = function () {
 	var legendValues;
 	var position = "vertical";
 // One way for the module to expose events to the outside world is by using  d3.dispatch to declare 
-// an event that we can then listen to from the out- side when it’s triggered in the module.
+// an event that we can then listen to from the outside when it’s triggered in the module.
 //Both d3.dispath and d3.rebind are classified as d3 Internals and are utilities for implementing reusable components.
 	var dispatch = d3.dispatch("mouseOver", "mouseOut","onClick");
 

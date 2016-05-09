@@ -17,7 +17,7 @@ init()
 function init(){
 		d3.xhr("https://restcountries.eu/rest/v1/all", function(data) { 
 		  countries = JSON.parse(data.response)
-		  console.log(country,countryID)
+		  //console.log(country,countryID)
 		  buildLineChart() 
 		});
 		
@@ -83,7 +83,7 @@ function buildLineChart(){
 
 			//Load data
 			d3.csv("data/data_regions.csv", function(data) {
-	
+				console.log(data)
 				//d3.text("tooltip.html", function(data) { d3.select(".sideBar").append("div").attr("id", "modal").html(data)})
 		
 				var regions = d3.nest().key(function(d) { return d["Region"]}).sortKeys(d3.ascending).entries(data)
@@ -176,7 +176,9 @@ function buildLineChart(){
 				//binding just the headlines data to each one
 				//.data(dataset) //using this format will warp the line color and append World as the 
 				//title for every line
-				groups.selectAll("path").data(function(d) { return [d]}).enter().append("path")	
+				groups.selectAll("path").data(function(d) { 
+					console.log(d)
+					console.log([d]);return [d]}).enter().append("path")	
 					.style("stroke", 
 						function(d,i) { 
       				var val;
@@ -211,7 +213,7 @@ function buildLineChart(){
 					.on("mouseout", function(d) {
 						mouseout(d)
 					})
-					.attr("d", function(d) { return line(d.headlines)} )
+					.attr("d", function(d) { console.log(d) ;return line(d.headlines)} )
 					//.append("title").text(function(d) {return d.location})
 
 		var points = svg.selectAll("circle").data(circleData)
