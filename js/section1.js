@@ -9,6 +9,8 @@ var height = 500 - m.top - m.bottom;
 var currentYear = "2002";
 var tooltip;
 var grouped = true;
+var alldata; 
+var yearMean;
 
 var svg = d3.select(".regionalstats").append('svg')
 	.attr("width",width + m.left + m.right)
@@ -42,6 +44,7 @@ var xAxis = d3.svg.axis().scale(xScale).orient("bottom")
   		.text("2002 Renewable Energy Output").style("font-size",20)
 //API call for csv data and all formatting of data
 d3.csv("data/data_regions.csv", function(data) {
+	 alldata = data;
 	//d3.nest to rollup Region and mean of years
 	var regions = d3.set(data.map(ƒ('Region')))//testing jetpack
 		.values().filter(function(d) { return !(d == "World")}).sort(d3.acscending) 
@@ -54,7 +57,7 @@ d3.csv("data/data_regions.csv", function(data) {
 	var rlegend = d3.models.legend().fontSize(15).width(width).height(height).inputScale(colorScale)
 	svg.call(rlegend)
 
-	var yearMean = d3.nest().key(function(d) { return d["Region"] } ).sortKeys(d3.ascending)
+	yearMean = d3.nest().key(function(d) { return d["Region"] } ).sortKeys(d3.ascending)
 	  	.rollup(function(v) { 
 	  		//console.log(v)// [Object, Object]  each obj is a row of data
 	  		return { mean: mean(v), countries: v.map(function(c) { return c.Location} ) } 
@@ -83,7 +86,7 @@ d3.csv("data/data_regions.csv", function(data) {
 	var yearMeanNoWorld = yearMean.filter(function(d) { return !(d.key == "World") })
 
 	//Converted yearMean object to format consistent with csv import.  
-	var formatYear = (function () {
+formatYear = (function () {
 		var array = []
 		yearMean.forEach(function(d) {
 			var obj = {};
@@ -112,6 +115,7 @@ d3.csv("data/data_regions.csv", function(data) {
 })//end csv
 
 function countryChart(data,year,yearMean,formatYear) { 
+	console.log(data,year,yearMean,formatYear)
 	grouped = false;
 	var yearMean = formatYear
 	var filterOutWorld = data.filter(function(d,i) { return !(d["Location"] == "World")} )
@@ -190,13 +194,14 @@ function countryChart(data,year,yearMean,formatYear) {
 		.attr("cy", function(d,i) { return yScale(+d["2012"]) })
 		.attr("cx", function(d,i) { return xScale(+d[year]) })
 		.attr("r",5)
+			.attr("stroke-width",0)
+			.attr("stroke", "rgba(230,230,230, .8)")
 
 	d3.selectAll(".Region").transition().duration(2000).attr("r",0).remove()
 
 	//Update Axises
 	svg.select(".x.Axis").transition().duration(2000).call(xAxis);
 	svg.select(".y.Axis").transition().duration(2000).call(yAxis);
-
 }
 
 function regionChart(data,yearMean,year,formatYear) {
@@ -215,7 +220,7 @@ function regionChart(data,yearMean,year,formatYear) {
 
 		circles.enter().append("circle")
 			.attr("class",function(d) { return d.Region})
-			.attr("r",20)
+			.attr("r",0)
 
 		circles
 			.attr("radius",5)
@@ -230,6 +235,8 @@ function regionChart(data,yearMean,year,formatYear) {
 				return radiusScale(+d.countries.length)})
 				.attr("cy", function(d,i) { return yScale(+d["2012"]) })
 			.attr("cx", function(d,i) { return xScale(+d[year]) })
+				.attr("stroke-width",0)
+			.attr("stroke", "rgba(230,230,230, .8)")
 
 		d3.selectAll(".Country").transition().duration(3000)
 				.attr("cy", function(d) { 
@@ -309,16 +316,22 @@ function regionChart(data,yearMean,year,formatYear) {
 		d3.selectAll(".line2").remove()
 			this
 				.attr("x1", xScale(+this.datum()[currentYear])  )
-				.attr("y1", height )
+				.attr("y1", yScale(+this.datum()["2012"]))
 				.attr("x2", xScale(+this.datum()[currentYear]) )
 				.attr("y2", yScale(+this.datum()["2012"]))
 				.attr("stroke-width", 1)
 				.attr("stroke", this.datum()["color"]  )
 				.style("opacity",1)
 				.attr("class","line2")
+				.transition().duration(500)
+				.attr("x2", xScale(+this.datum()[currentYear])  )
+				.attr("y2", yScale(0))
 				//.attr("r",radiusOver + 10)
 	}
-	function displayToolTip(selection,d,cx,cy) { 
+	function displayToolTip(selection,d,cx,cy) {
+
+			var item = this.datum()
+			//console.log(item)
 
 			d3.selectAll(".d3tooltip").remove()
 			tooltip = d3.select(".regionalstats").append("div").attr("class","d3tooltip")
@@ -334,12 +347,24 @@ function regionChart(data,yearMean,year,formatYear) {
 				'<span class="key">2012:</span> <span class="value">' + +d["2012"] + '%</span><br/>' + 
 				'<span class="key">2002:</span> <span class="value">' + +d["2002"] + '%</span><br/>'  + 
 				'<hr class="d3tooltiphr" style="border: 1px solid ' +  d.color + ' " ' +  '>' +
-				'<span class="key">Countries:</span>  <span class="value"><a href="#">' + d.countries.length + '</a></span>')
+				'<span class="key">Countries:</span>  <span class="value"><a href="javascript:void(0)">' + d.countries.length + '</a></span>')
 					.style("left", function() {
 				 if ((cx + 100) > width ) { return (cx -30) + "px" } 
 					else { return (cx + 100) + "px" } 
 				} )
 				.style("top", (cy) + "px")
+
+				d3.selectAll("a").on("click", function() { 
+
+					var countries = alldata.filter(function(c,i) { 
+					console.log()
+						return d.Region == c.Region })
+					console.log(countries)
+					countryChart(countries,currentYear,yearMean,formatYear)
+
+					d3.selectAll(".radio_buttons").property("checked", function(d, i) {return "Countries"});
+
+			 })
 			}
 
 			else {

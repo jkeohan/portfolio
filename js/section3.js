@@ -83,7 +83,7 @@ function buildLineChart(){
 
 			//Load data
 			d3.csv("data/data_regions.csv", function(data) {
-				console.log(data)
+
 				//d3.text("tooltip.html", function(data) { d3.select(".sideBar").append("div").attr("id", "modal").html(data)})
 		
 				var regions = d3.nest().key(function(d) { return d["Region"]}).sortKeys(d3.ascending).entries(data)
@@ -177,8 +177,7 @@ function buildLineChart(){
 				//.data(dataset) //using this format will warp the line color and append World as the 
 				//title for every line
 				groups.selectAll("path").data(function(d) { 
-					console.log(d)
-					console.log([d]);return [d]}).enter().append("path")	
+		return [d]}).enter().append("path")	
 					.style("stroke", 
 						function(d,i) { 
       				var val;
@@ -213,7 +212,7 @@ function buildLineChart(){
 					.on("mouseout", function(d) {
 						mouseout(d)
 					})
-					.attr("d", function(d) { console.log(d) ;return line(d.headlines)} )
+					.attr("d", function(d) { return line(d.headlines)} )
 					//.append("title").text(function(d) {return d.location})
 
 		var points = svg.selectAll("circle").data(circleData)
@@ -373,7 +372,7 @@ function buildLineChart(){
 
 	function updateSection3Panel(data) {
 	
-		console.log(data)
+		//console.log(data)
 
 			var location = data["location"]
 		  for(var i = 0 ; i < countries.length ; i++) {
@@ -385,9 +384,6 @@ function buildLineChart(){
 		  }
 
 		var change = calChange(data)
-		console.log(change)
-
-		console.log(data)
 		var cell2002 = void 0;
 		var cell2012 = void 0;
 
@@ -423,7 +419,7 @@ function buildLineChart(){
 			d3.select(".percentChange").classed("glyphicon-arrow-down",false)  
 			obj = { "updown": updown, "change": change, "color": "green"} 
 		}
-		console.log(obj)
+		//console.log(obj)
 		return obj
 	}
 	function tabulate(data) {
